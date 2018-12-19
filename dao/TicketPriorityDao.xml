@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yks.ticket.lite.dao.TicketPriorityDao">
+  <resultMap id="ticketPriorityResultMap" type="yks.ticket.lite.entity.TicketPriorityEntity" autoMapping="true">
+  </resultMap>
+
+  <select id="findByProject" resultMap="ticketPriorityResultMap">
+    select
+        T1.project_id  --プロジェクトID
+      , T1.id          --進捗ID
+      , T1.disp_seq    --表示順
+      , T1.name        --優先順位名称
+      , T1.versionNo   --バージョンNo
+    from t_ticket_priority T1
+    where T1.project_id = #{project_id}
+      and T1.available = 'yes'
+    order by T1.disp_seq
+  </select>
+
+  <update id="setUnavailable">
+    update t_ticket_priority set
+      available = 'no'
+    where project_id = #{project_id}
+  </update>
+
+  <insert id="appendItem">
+    insert into t_ticket_priority (
+        project_id  --プロジェクトID
+      , id  --識別子
+      , disp_seq  --表示順
+      , name  --優先順位名称
+      , available  --有効フラグ
+      , createUserId  --作成者ID
+      , updateUserId  --更新者ID
+    ) values (
+        #{project_id}
+      , #{id}
+      , #{disp_seq}
+      , #{name}
+      , 'yes'
+      , #{createUserId}
+      , #{createUserId}
+    )
+  </insert>
+
+  <update id="updateItem">
+    update t_ticket_priority set
+        disp_seq = #{disp_seq}
+      , name = #{name}
+      , available = 'yes'
+      , updateDate = CURRENT_TIMESTAMP
+      , updateUserId = #{updateUserId}
+      , versionNo = versionNo + 1
+    where project_id = #{project_id}
+      and id = #{id}
+  </update>
+
+  <select id="getMaxId" resultType="Long">
+    select
+      coalesce(max(T1.id), 0)
+    from t_ticket_priority T1
+    where T1.project_id = #{project_id}
+  </select>
+</mapper>

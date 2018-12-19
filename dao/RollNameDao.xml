@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yks.ticket.lite.dao.RollNameDao">
+  <resultMap id="rollNameResultMap" type="yks.ticket.lite.entity.RollNameEntity" autoMapping="true">
+  </resultMap>
+
+  <insert id="insert">
+    insert into t_roll_name (
+        id       --識別子
+      , name     --ロール名
+      <if test="description != null">
+      , description  --説明
+      </if>
+      , createUserId  --作成者ID
+      , updateUserId  --更新者ID
+    ) values (
+      <if test="id == null">
+        coalesce((select max(id) from t_roll_name), 0) + 1
+      </if>
+      <if test="id != null">
+        #{id}
+      </if>
+      , #{name}
+      <if test="description != null">
+      , #{description}
+      </if>
+      , #{createUserId}
+      , #{createUserId}
+    )
+  </insert>
+
+  <select id="findAll" resultMap="rollNameResultMap">
+    select
+        id  --ロール名称ID
+      , name   --ロール名
+      , description  --説明
+      , createDate  --作成日時
+      , createUserId  --作成者ID
+      , updateDate  --更新日時
+      , updateUserId  --更新者ID
+      , versionNo     --バージョンNo
+    from t_roll_name
+    order by id
+  </select>
+
+  <select id="findByPk" resultMap="rollNameResultMap">
+    select
+        id  --ロール名称ID
+      , name   --ロール名
+      , description  --説明
+      , createDate  --作成日時
+      , createUserId  --作成者ID
+      , updateDate  --更新日時
+      , updateUserId  --更新者ID
+      , versionNo     --バージョンNo
+    from t_roll_name
+    where id = #{id}
+  </select>
+
+  <select id="findMaxId" resultType="Long">
+    select
+        coalesce(max(id), 0)
+    from t_roll_name
+  </select>
+
+  <update id="updateByPk">
+    update t_roll_name set
+        name = #{name}  --ロール名
+      , description = #{description}  --説明
+      , updateUserId = #{updateUserId}  --更新ユーザID
+      , updateDate = CURRENT_TIMESTAMP
+      , versionNo  = versionNo + 1
+    where id = #{id}
+  </update>
+</mapper>

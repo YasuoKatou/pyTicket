@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yks.ticket.lite.dao.DBInitDao">
+	<insert id="createProjectMaster">
+		create table m_project (
+			  id bigint primary key				--識別子（自動付番）
+			, name varchar(256) not null		--プロジェクト名称
+			, description varchar(1024)			--プロジェクトの説明
+			, manager_id bigint not null		--プロジェクト管理者
+			, alive varchar(10) not null default 'yes'	--プロジェクト進行中
+			, opened varchar(10) not null default 'no'	--第三者に公開
+			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
+			, createUserId bigint not null								--作成者ID
+			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
+			, updateUserId bigint not null								--更新者ID
+			, versionNo int not null default 1							--バージョンNo
+		)
+	</insert>
+	<delete id="dropProjectMaster">
+		drop table m_project
+	</delete>
+
+	<insert id="createUserMaster">
+		create table m_user (
+			  id bigint	primary key				--識別子（自動付番）
+			, login_id varchar(256) not null	--ログインID
+			, passwd varchar(256) not null		--パスワード（暗号化）
+			, name1 varchar(256) not null		--性
+			, name2 varchar(256) not null		--名
+			, email varchar(256) not null		--メールアドレス
+			, language_id bigint not null		--言語ID
+			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
+			, createUserId bigint not null								--作成者ID
+			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
+			, updateUserId bigint not null								--更新者ID
+			, versionNo int not null default 1							--バージョンNo
+		)
+	</insert>
+	<delete id="dropUserMaster">
+		drop table m_user
+	</delete>
+
+	<insert id="createLanguageMaster">
+		create table m_language (
+			  id bigint	primary key				--識別子（自動付番）
+			, name varchar(64) not null			--言語名
+			, country varchar(64) not null		--国名
+			, remarks varchar(64)				--説明
+			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
+			, createUserId bigint not null								--作成者ID
+			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
+			, updateUserId bigint not null								--更新者ID
+			, versionNo int not null default 1							--バージョンNo
+		)
+	</insert>
+	<delete id="dropLanguageMaster">
+		drop table m_language
+	</delete>
+
+	<insert id="createRollGroupMaster">
+		create table m_rollGroup (
+			  id bigint	primary key				--識別子（自動付番）
+			, name varchar(64) not null			--ロールグループ名
+			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
+			, createUserId bigint not null								--作成者ID
+			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
+			, updateUserId bigint not null								--更新者ID
+			, versionNo int not null default 1							--バージョンNo
+		)
+	</insert>
+	<delete id="dropRollGroupMaster">
+		drop table m_rollGroup
+	</delete>
+
+	<insert id="createRollItemMaster">
+		create table m_rollItem (
+			  id bigint	primary key				--識別子（自動付番）
+			, name varchar(64) not null			--ロール名
+			, group_id bigint not null			--ロールグループ識別子
+			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
+			, createUserId bigint not null								--作成者ID
+			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
+			, updateUserId bigint not null								--更新者ID
+			, versionNo int not null default 1							--バージョンNo
+		)
+	</insert>
+	<delete id="dropRollItemMaster">
+		drop table m_rollItem
+	</delete>
+
+	<insert id="createSessionTran">
+		create table t_session (
+			  session_id varchar(64) primary key	--セッションID
+			, user_id bigint not null				--ユーザ識別子
+			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
+			, createUserId bigint not null								--作成者ID
+			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
+			, updateUserId bigint not null								--更新者ID
+			, versionNo int not null default 1							--バージョンNo
+		)
+	</insert>
+	<delete id="dropSessionTran">
+		drop table t_session
+	</delete>
+
+	<insert id="createRollNameTran">
+		create table t_roll_name (
+			  id bigint primary key					--ロール名称ID
+			, name varchar(256) not null			--ロール名称
+			, description varchar(1024)				--説明
+			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
+			, createUserId bigint not null								--作成者ID
+			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
+			, updateUserId bigint not null								--更新者ID
+			, versionNo int not null default 1							--バージョンNo
+		)
+	</insert>
+	<delete id="dropRollNameTran">
+		drop table t_roll_name
+	</delete>
+
+	<insert id="createRollSettingTran">
+		create table t_roll_setting (
+			  roll_name_id bigint 					--ロール名称ID
+			, roll_item_id bigint 					--ロール項目ID
+			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
+			, createUserId bigint not null								--作成者ID
+			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
+			, updateUserId bigint not null								--更新者ID
+			, versionNo int not null default 1							--バージョンNo
+			, primary key(roll_name_id, roll_item_id)
+		)
+	</insert>
+	<delete id="dropRollSettingTran">
+		drop table t_roll_setting
+	</delete>
+
+	<insert id="createTicketTran">
+		create table t_ticket (
+			  id bigint primary key					--チケットID
+			, title varchar(256) not null			--チケットタイトル
+			, description varchar(1024)				--チケットの説明
+			, status_id bigint						--チケットステータスID
+			, kind_id bigint						--種類ID
+			, priority_id bigint					--優先順位ID
+			, start_date DATE						--開始日
+			, finish_date DATE						--終了日
+			, progress_id bigint					--チケットの進捗
+			, project_id bigint						--プロジェクトID
+			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
+			, createUserId bigint not null								--作成者ID
+			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
+			, updateUserId bigint not null								--更新者ID
+			, versionNo int not null default 1							--バージョンNo
+		)
+	</insert>
+	<delete id="dropTicketTran">
+		drop table t_ticket
+	</delete>
+
+	<insert id="createTicketMemoTran">
+		create table t_ticket_memo (
+			  id bigint 							--メモID
+			, ticket_id bigint						--チケットID
+			, memo varchar(1024) not null			--メモ内容
+			, root_memo_id bigint not null			--ルートメモID
+			, parent_memo_id bigint not null		--親メモID
+			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
+			, createUserId bigint not null								--作成者ID
+			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
+			, updateUserId bigint not null								--更新者ID
+			, versionNo int not null default 1							--バージョンNo
+			, primary key(ticket_id, id)
+		)
+	</insert>
+	<delete id="dropTicketMemoTran">
+		drop table t_ticket_memo
+	</delete>
+
+	<insert id="createTicketHistory">
+		create table h_ticket (
+			  id bigint								--チケットID
+			, title varchar(256) not null			--チケットタイトル
+			, description varchar(1024)				--チケットの説明
+			, status_id bigint						--チケットステータスID
+			, kind_id bigint						--種類ID
+			, priority_id bigint					--優先順位ID
+			, start_date DATE						--開始日
+			, finish_date DATE						--終了日
+			, progress_id bigint					--チケットの進捗
+			, project_id bigint						--プロジェクトID
+			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
+			, createUserId bigint not null								--作成者ID
+			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
+			, updateUserId bigint not null								--更新者ID
+			, versionNo int not null default 1							--バージョンNo
+			, primary key(id, versionNo)
+		)
+	</insert>
+	<delete id="dropTicketHistory">
+		drop table h_ticket
+	</delete>
+
+	<insert id="createTicketMemoHistory">
+		create table h_ticket_memo (
+			  id bigint 							--メモID
+			, ticket_id bigint						--チケットID
+			, memo varchar(1024) not null			--説明
+			, root_memo_id bigint not null			--ルートメモID
+			, parent_memo_id bigint not null		--親メモID
+			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
+			, createUserId bigint not null								--作成者ID
+			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
+			, updateUserId bigint not null								--更新者ID
+			, versionNo int not null default 1							--バージョンNo
+			, primary key(id, ticket_id, versionNo)
+		)
+	</insert>
+	<delete id="dropTicketMemoHistory">
+		drop table h_ticket_memo
+	</delete>
+
+	<insert id="createProjectStatusTran">
+		create table t_proj_stat (
+			  project_id bigint						--プロジェクトID
+			, id bigint								--識別子
+			, disp_seq int							--表示順
+			, name varchar(256) not null			--ステータス名称
+			, available varchar(10) not null		--有効フラグ
+			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
+			, createUserId bigint not null								--作成者ID
+			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
+			, updateUserId bigint not null								--更新者ID
+			, versionNo int not null default 1							--バージョンNo
+			, primary key(project_id, id)
+		)
+	</insert>
+	<delete id="dropProjectStatusTran">
+		drop table t_proj_stat
+	</delete>
+
+	<insert id="createTicketStatusTran">
+		create table t_ticket_stat (
+			  project_id bigint						--プロジェクトID
+			, id bigint								--識別子
+			, disp_seq int							--表示順
+			, name varchar(256) not null			--ステータス名称
+			, available varchar(10) not null		--有効フラグ
+			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
+			, createUserId bigint not null								--作成者ID
+			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
+			, updateUserId bigint not null								--更新者ID
+			, versionNo int not null default 1							--バージョンNo
+			, primary key(project_id, id)
+		)
+	</insert>
+	<delete id="dropTicketStatusTran">
+		drop table t_ticket_stat
+	</delete>
+
+	<insert id="createTicketProgressTran">
+		create table t_ticket_progress (
+			  project_id bigint						--プロジェクトID
+			, id bigint								--識別子
+			, disp_seq int							--表示順
+			, name varchar(256) not null			--進捗名称
+			, available varchar(10) not null		--有効フラグ
+			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
+			, createUserId bigint not null								--作成者ID
+			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
+			, updateUserId bigint not null								--更新者ID
+			, versionNo int not null default 1							--バージョンNo
+			, primary key(project_id, id)
+		)
+	</insert>
+	<delete id="dropTicketProgressTran">
+		drop table t_ticket_progress
+	</delete>
+
+	<insert id="createTicketKindTran">
+		create table t_ticket_kind (
+			  project_id bigint						--プロジェクトID
+			, id bigint								--識別子
+			, disp_seq int							--表示順
+			, name varchar(256) not null			--種類名称
+			, available varchar(10) not null		--有効フラグ
+			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
+			, createUserId bigint not null								--作成者ID
+			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
+			, updateUserId bigint not null								--更新者ID
+			, versionNo int not null default 1							--バージョンNo
+			, primary key(project_id, id)
+		)
+	</insert>
+	<delete id="dropTicketKindTran">
+		drop table t_ticket_kind
+	</delete>
+
+	<insert id="createTicketPriorityTran">
+		create table t_ticket_priority (
+			  project_id bigint						--プロジェクトID
+			, id bigint								--識別子
+			, disp_seq int							--表示順
+			, name varchar(256) not null			--優先順位名称
+			, available varchar(10) not null		--有効フラグ
+			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
+			, createUserId bigint not null								--作成者ID
+			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
+			, updateUserId bigint not null								--更新者ID
+			, versionNo int not null default 1							--バージョンNo
+			, primary key(project_id, id)
+		)
+	</insert>
+	<delete id="dropTicketPriorityTran">
+		drop table t_ticket_priority
+	</delete>
+</mapper>

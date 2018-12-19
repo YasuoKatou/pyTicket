@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yks.ticket.lite.dao.RollSettingDao">
+  <resultMap id="rollSettingResultMap" type="yks.ticket.lite.entity.RollSettingEntity" autoMapping="true">
+  </resultMap>
+
+  <insert id="insert">
+    insert into t_roll_setting (
+        roll_name_id  --ロール名称ID
+      , roll_item_id  --ロール項目ID
+      , createUserId  --作成者ID
+      , updateUserId  --更新者ID
+    ) values (
+        #{rollNameId}
+      , #{rollItemId}
+      , #{createUserId}
+      , #{createUserId}
+    )
+  </insert>
+
+  <select id="findSetting" resultMap="rollSettingResultMap">
+    select
+        RS.roll_name_id rollNameId  --ロール名称ID
+      , RS.roll_item_id rollItemId  --ロール項目ID
+      , RS.createDate  --作成日時
+      , RS.createUserId  --作成者ID
+      , RS.updateDate  --更新日時
+      , RS.updateUserId  --更新者ID
+      , RS.versionNo     --バージョンNo
+      , RI.group_id rollGroupId  --ロールグループID
+    from t_roll_setting RS
+    inner join m_rollItem RI
+       on RI.id = RS.roll_item_id
+    where roll_name_id = #{rollNameId}  --ロール名称ID
+    order by RS.roll_item_id
+  </select>
+
+  <delete id="deleteByRollNameId">
+    delete from t_roll_setting
+    where roll_name_id = #{rollNameId}  --ロール名称ID
+  </delete>
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yks.ticket.lite.dao.master.LanguageMasterDao">
+  <resultMap id="languageMasterResultMap" type="yks.ticket.lite.entity.master.LanguageMasterEntity" autoMapping="true">
+  </resultMap>
+
+  <insert id="insert">
+    insert into m_language (
+        id       --識別子
+      , name     --言語名
+      , country  --国名
+      <if test="remarks != null">
+      , remarks  --説明
+      </if>
+      , createUserId  --作成者ID
+      , updateUserId  --更新者ID
+    ) values (
+      <if test="id == null">
+        coalesce((select max(id) from m_language), 0) + 1
+      </if>
+      <if test="id != null">
+        #{id}
+      </if>
+      , #{name}
+      , #{country}
+      <if test="remarks != null">
+      , #{remarks}
+      </if>
+      , #{createUserId}
+      , #{createUserId}
+    )
+  </insert>
+
+  <select id="findAll" resultMap="languageMasterResultMap">
+    select
+        id       --識別子
+      , name     --言語名
+      , country  --国名
+      , remarks  --説明
+      , versionNo     --バージョンNo
+    from m_language
+    order by name
+  </select>
+</mapper>

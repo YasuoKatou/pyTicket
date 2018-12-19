@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yks.ticket.lite.dao.master.UserMasterDao">
+  <resultMap id="userMasterResultMap" type="yks.ticket.lite.entity.master.UserMasterEntity" autoMapping="true">
+    <association property="language" columnPrefix="lang_" resultMap="yks.ticket.lite.dao.master.LanguageMasterDao.languageMasterResultMap" />
+  </resultMap>
+
+  <insert id="insert">
+    insert into m_user (
+        id       --識別子
+      , login_id --ログインID
+      , passwd   --パスワード
+      , name1    --性
+      , name2    --名
+      , email    --メールアドレス
+      , language_id  --言語ID
+      , createUserId  --作成者ID
+      , updateUserId  --更新者ID
+    ) values (
+      <if test="id == null">
+        coalesce((select max(id) from m_user), 0) + 1
+      </if>
+      <if test="id != null">
+        #{id}
+      </if>
+      , #{login_id}
+      , #{passwd}
+      , #{name1}
+      , #{name2}
+      , #{email}
+      , #{language_id}
+      , #{createUserId}
+      , #{createUserId}
+    )
+  </insert>
+
+  <select id="findByLoginId" resultMap="userMasterResultMap">
+    select
+        T1.id       --識別子
+      , T1.login_id --ログインID
+      , T1.passwd   --パスワード
+      , T1.name1    --性
+      , T1.name2    --名
+      , T1.email    --メールアドレス
+      , T1.language_id  --言語ID
+      , T1.createUserId  --作成者ID
+      , T1.updateDate    --更新日時
+      , T1.updateUserId  --更新者ID
+      , T1.versionNo     --バージョンNo
+      , M1.name lang_name        --言語名
+      , M1.country lang_country  --国名
+    from m_user T1
+    inner join m_language M1
+       on T1.language_id = M1.id
+    where T1.login_id = #{login_id}
+  </select>
+
+  <select id="findById" resultMap="userMasterResultMap">
+    select
+        T1.id       --識別子
+      , T1.login_id --ログインID
+      , T1.passwd   --パスワード
+      , T1.name1    --性
+      , T1.name2    --名
+      , T1.email    --メールアドレス
+      , T1.language_id  --言語ID
+      , T1.createUserId  --作成者ID
+      , T1.updateDate    --更新日時
+      , T1.updateUserId  --更新者ID
+      , T1.versionNo     --バージョンNo
+      , M1.name lang_name        --言語名
+      , M1.country lang_country  --国名
+    from m_user T1
+    inner join m_language M1
+       on T1.language_id = M1.id
+    where T1.id = #{id}
+  </select>
+
+  <select id="findListAll" resultMap="userMasterResultMap">
+    select
+        T1.id       --識別子
+      , T1.login_id --ログインID
+      , T1.passwd   --パスワード
+      , T1.name1    --性
+      , T1.name2    --名
+      , T1.email    --メールアドレス
+      , T1.language_id  --言語ID
+      , T1.createUserId  --作成者ID
+      , T1.updateDate    --更新日時
+      , T1.updateUserId  --更新者ID
+      , T1.versionNo     --バージョンNo
+      , M1.name lang_name        --言語名
+      , M1.country lang_country  --国名
+    from m_user T1
+    inner join m_language M1
+       on T1.language_id = M1.id
+    order by T1.id
+  </select>
+
+  <update id="update">
+    update m_user set
+        login_id    = #{login_id}  --ログインID
+      , passwd      = #{passwd}    --パスワード
+      , name1       = #{name1}     --性
+      , name2       = #{name2}     --名
+      , email       = #{email}     --メールアドレス
+      , language_id = #{language_id}  --言語ID
+      , updateUserId = #{updateUserId}  --更新ユーザID
+      , updateDate = CURRENT_TIMESTAMP
+      , versionNo  = versionNo + 1
+    where id = #{id}
+  </update>
+</mapper>

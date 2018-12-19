@@ -1,0 +1,81 @@
+{"initDataList":[
+	{"title":"言語マスタの初期データ登録"
+	,"dao":"languageMasterDao", "method":"insert", "entity":"yks.ticket.lite.entity.master.LanguageMasterEntity"
+	,"values":[{"name":"日本語", "country":"japan", "createUserId":1}]
+	}
+,	{"title":"ユーザマスタの初期データ登録"
+	,"dao":"userMasterDao", "method":"insert", "entity":"yks.ticket.lite.entity.master.UserMasterEntity"
+	,"values":[{"id":1, "login_id":"admin", "passwd":"admin", "name1":"Katou", "name2":"Yasuo", "email":"yasuokatou@gmail.com", "language_id":1, "createUserId":1}]
+	}
+,	{"title":"ロールグループマスタの初期データ登録"
+	,"dao":"rollGroupMasterDao", "method":"insert", "entity":"yks.ticket.lite.entity.master.RollGroupMasterEntity"
+	,"values":[{"id":1000, "name":"プロジェクト", "createUserId":1}
+			 , {"id":2000, "name":"ファイル", "createUserId":1}
+			 , {"id":3000, "name":"チケット", "createUserId":1}
+			 , {"id":4000, "name":"Wiki", "createUserId":1}]
+	}
+,	{"title":"ロール項目マスタの初期データ登録"
+	,"dao":"rollItemMasterDao", "method":"insert", "entity":"yks.ticket.lite.entity.master.RollItemMasterEntity"
+	,"values":[{"id":1001, "name":"プロジェクトの編集", "group_id":1000, "createUserId":1}
+			 , {"id":1002, "name":"プロジェクトの終了/再開", "group_id":1000, "createUserId":1}
+			 , {"id":1003, "name":"メンバーの管理", "group_id":1000, "createUserId":1}
+			 , {"id":1004, "name":"サブプロジェクトの追加（将来機能）", "group_id":1000, "createUserId":1}
+			 , {"id":2001, "name":"ファイルの閲覧", "group_id":2000, "createUserId":1}
+			 , {"id":3001, "name":"チケットのカテゴリの管理", "group_id":3000, "createUserId":1}
+			 , {"id":3002, "name":"チケットの閲覧", "group_id":3000, "createUserId":1}
+			 , {"id":3003, "name":"チケットの追加", "group_id":3000, "createUserId":1}
+			 , {"id":3004, "name":"チケットの編集", "group_id":3000, "createUserId":1}
+			 , {"id":3005, "name":"チケットの削除", "group_id":3000, "createUserId":1}
+			 , {"id":4001, "name":"Wikiの閲覧", "group_id":4000, "createUserId":1}
+			 , {"id":4002, "name":"Wikiページの編集", "group_id":4000, "createUserId":1}]
+	}
+,	{"title":"ロール名称の初期データ登録"
+	,"dao":"rollNameDao", "method":"insert", "entity":"yks.ticket.lite.entity.RollNameEntity"
+	,"values":[{"id":1, "name":"システム管理者", "description":"全権限を与える", "createUserId":1}]
+	}
+,	{"title":"ロール設定の初期データ登録"
+	,"dao":"rollSettingDao", "method":"insert", "entity":"yks.ticket.lite.entity.RollSettingEntity"
+	,"values":[{"rollNameId":1, "rollItemId":1001, "createUserId":1}
+			 , {"rollNameId":1, "rollItemId":1002, "createUserId":1}
+			 , {"rollNameId":1, "rollItemId":1003, "createUserId":1}
+			 , {"rollNameId":1, "rollItemId":1004, "createUserId":1}
+			 , {"rollNameId":1, "rollItemId":2001, "createUserId":1}
+			 , {"rollNameId":1, "rollItemId":3001, "createUserId":1}
+			 , {"rollNameId":1, "rollItemId":3002, "createUserId":1}
+			 , {"rollNameId":1, "rollItemId":3003, "createUserId":1}
+			 , {"rollNameId":1, "rollItemId":3004, "createUserId":1}
+			 , {"rollNameId":1, "rollItemId":3005, "createUserId":1}
+			 , {"rollNameId":1, "rollItemId":4001, "createUserId":1}
+			 , {"rollNameId":1, "rollItemId":4002, "createUserId":1}]
+	}
+,	{"title":"チケットスタータスの初期データ登録"
+	,"dao":"ticketStatusDao", "method":"appendItem", "entity":"yks.ticket.lite.entity.TicketStatusEntity"
+	,"values":[{"project_id":0, "id":1, "disp_seq":1, "name":"未着手", "createUserId":1}
+			 , {"project_id":0, "id":2, "disp_seq":2, "name":"作業中", "createUserId":1}
+			 , {"project_id":0, "id":3, "disp_seq":3, "name":"完了", "createUserId":1}]
+	}
+,	{"title":"チケット進捗の初期データ登録"
+	,"dao":"ticketProgressDao", "method":"appendItem", "entity":"yks.ticket.lite.entity.TicketProgressEntity"
+	,"values":[{"project_id":0, "id":1, "disp_seq":1, "name":"10%", "createUserId":1}
+			 , {"project_id":0, "id":2, "disp_seq":2, "name":"30%", "createUserId":1}
+			 , {"project_id":0, "id":3, "disp_seq":3, "name":"50%", "createUserId":1}
+			 , {"project_id":0, "id":4, "disp_seq":4, "name":"70%", "createUserId":1}
+			 , {"project_id":0, "id":5, "disp_seq":5, "name":"90%", "createUserId":1}
+			 , {"project_id":0, "id":6, "disp_seq":6, "name":"100%", "createUserId":1}]
+	}
+,	{"title":"チケット種類の初期データ登録"
+	,"dao":"ticketKindDao", "method":"appendItem", "entity":"yks.ticket.lite.entity.TicketKindEntity"
+	,"values":[{"project_id":0, "id":1, "disp_seq":1, "name":"設計バグ", "createUserId":1}
+			 , {"project_id":0, "id":2, "disp_seq":2, "name":"製造バグ", "createUserId":1}
+			 , {"project_id":0, "id":3, "disp_seq":3, "name":"操作ミス", "createUserId":1}
+			 , {"project_id":0, "id":4, "disp_seq":4, "name":"その他", "createUserId":1}]
+	}
+,	{"title":"チケット優先順位の初期データ登録"
+	,"dao":"ticketPriorityDao", "method":"appendItem", "entity":"yks.ticket.lite.entity.TicketPriorityEntity"
+	,"values":[{"project_id":0, "id":1, "disp_seq":1, "name":"即対応", "createUserId":1}
+			 , {"project_id":0, "id":2, "disp_seq":2, "name":"高め", "createUserId":1}
+			 , {"project_id":0, "id":3, "disp_seq":3, "name":"通常", "createUserId":1}
+			 , {"project_id":0, "id":4, "disp_seq":4, "name":"低", "createUserId":1}
+			 , {"project_id":0, "id":5, "disp_seq":5, "name":"対応なし", "createUserId":1}]
+	}
+]}
