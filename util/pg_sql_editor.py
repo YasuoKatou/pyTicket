@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 import re
 
 #SQL内の変数定義

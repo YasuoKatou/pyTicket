@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 from bottle import post, request, run
 
 @post('/hello/json')

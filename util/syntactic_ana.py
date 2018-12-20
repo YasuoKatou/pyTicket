@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 import re
 
 _RE_JOIN = re.compile(r'.*[ )](?i)(and|or)[ (].*')
