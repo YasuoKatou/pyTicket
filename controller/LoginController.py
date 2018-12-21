@@ -10,6 +10,9 @@ class LoginController(BaseController):
     ログインコントローラクラス
     '''
     def __init__(self):
+        '''
+        URLのマッピング文字列を設定
+        '''
         super().__init__('/login')
         pass
     def execute_post(self, request):

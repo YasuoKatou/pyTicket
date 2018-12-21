@@ -1,1 +1,4 @@
 # pyTicket
+
+メインモジュール：pyTicket.py
+

@@ -59,6 +59,7 @@ def get_controller(path):
     global _controller_map
     return _controller_map[path]
 
+@post('/logout')
 @post('/login')
 def login():
     '''
