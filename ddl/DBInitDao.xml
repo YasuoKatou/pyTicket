@@ -92,7 +92,7 @@
 	<insert id="createSessionTran">
 		create table t_session (
 			  session_id varchar(64) primary key	--セッションID
-			, user_id bigint not null				--ユーザ識別子
+			, user_id varchar(256)					--ユーザ識別子
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
 			, createUserId bigint not null								--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
