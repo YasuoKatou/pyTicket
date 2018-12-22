@@ -5,7 +5,7 @@
 	}
 ,	{"title":"ユーザマスタの初期データ登録"
 	,"dao":"userMasterDao", "method":"insert", "entity":"yks.ticket.lite.entity.master.UserMasterEntity"
-	,"values":[{"id":1, "login_id":"admin", "passwd":"admin", "name1":"Katou", "name2":"Yasuo", "email":"yasuokatou@gmail.com", "language_id":1, "createUserId":1}]
+	,"values":[{"login_id":"b9ccad4d991ccd9c95af534d527069751f7be5db053f5f0c3cf98c2195aa9231", "passwd":"7dabe516bc8c6c901464f27ac59e3ce2d4749f2724f3e321019b183cbe5f169c", "name1":"Katou", "name2":"Yasuo", "email":"yasuokatou@gmail.com", "language_id":1, "createUserId":1}]
 	}
 ,	{"title":"ロールグループマスタの初期データ登録"
 	,"dao":"rollGroupMasterDao", "method":"insert", "entity":"yks.ticket.lite.entity.master.RollGroupMasterEntity"

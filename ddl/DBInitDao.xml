@@ -24,8 +24,7 @@
 
 	<insert id="createUserMaster">
 		create table m_user (
-			  id bigint	primary key				--識別子（自動付番）
-			, login_id varchar(256) not null	--ログインID
+			  login_id varchar(256) primary key	--ログインID
 			, passwd varchar(256) not null		--パスワード（暗号化）
 			, name1 varchar(256) not null		--性
 			, name2 varchar(256) not null		--名
