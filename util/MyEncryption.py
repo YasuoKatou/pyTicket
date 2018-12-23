@@ -1,23 +1,27 @@
-import hashlib
+from Crypto.Cipher import AES
 
-def make_hash(*args):
-	#print(args)
-	m = hashlib.sha256()
-	for x in args:
-		#print(x)
-		m.update(x.encode('utf-8'))
-	return m.hexdigest()
+def encryption(key, data):
+	crypto = AES.new(key.encode('utf-8'))
+	return crypto.encrypt(data.encode('utf-8'))
+
+
+def decryption(key, data):
+	crypto = AES.new(key.encode('utf-8'))
+	return crypto.decrypt(data).decode('utf-8')
 
 if __name__ == '__main__':
-	'''
-	DBに登録するログインIDとパスワードのハッシュ化
-	'''
-	#ログインIDのハッシュ化
-	uid = u'admin'
-	h_lid = make_hash(u'ykTicket', uid)
-	print('login id :', h_lid)
+	key = '1234567890abcdef'
+	data = 'hello Crypto.Cipher AES!       ;'
+	print('source    : [' + data + "]")
+	#
+	encrypted = encryption(key, data)
+	#print('type of encrypted', type(encrypted))
+	enc_hex = encrypted.hex()
+	#print('encrypted', enc_hex)
 
-	#パスワードのハッシュ化
-	pwd = u'admin'
-	h_pwd = make_hash(h_lid, pwd)
-	print('passwd :', h_pwd)
+	#
+	dec = bytes.fromhex(enc_hex)
+	#print(dec)
+	decrypted = decryption(key, dec)
+	print('decrypted : [' + decrypted + ']')
+#[EOF]
