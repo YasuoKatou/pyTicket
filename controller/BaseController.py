@@ -6,11 +6,12 @@ class BaseController:
     '''
     コントローラクラスの基本クラス
     '''
-    def __init__(self, mapperName):
-        self._mapper_name = mapperName;
+    def __init__(self, controller_name, mapping):
+        self._controller_name = controller_name
+        self._mapping = mapping
     @property
-    def mapper_name(self):
-        return self._mapper_name
+    def controller_name(self):
+        return self._controller_name
     def execute_post(self, request):
         raise Exception('クラスの継承を行って、execute_postをoverrideして下さい.')
     def set_service_map(self, map):
@@ -21,4 +22,9 @@ class BaseController:
         r = HTTPResponse(status=200, body=body)
         r.set_header('Content-Type', 'application/json')
         return r
+    def hasMapping(self, path):
+        for map in self._mapping:
+            if map['url'] == path:
+                return map['method']
+        return None
 #[EOF]

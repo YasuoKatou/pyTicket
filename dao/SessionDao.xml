@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yks.ticket.lite.dao.master.SessionDao">
+  <resultMap id="sessionResultMap" type="yks.ticket.lite.entity.master.SessionEntity" autoMapping="true">
+  </resultMap>
+
+  <insert id="insert">
+    insert into t_session (
+	      session_id    --セッションID
+	    , user_id       --ユーザ識別子
+	    , createDate    --作成日時
+	    , createUserId  --作成者ID
+	    , updateDate    --更新日時
+	    , updateUserId  --更新者ID
+	    , versionNo     --バージョンNo
+    ) values (
+	      #{session_id}
+		  , #{user_id}
+	    , CURRENT_TIMESTAMP
+	    , #{createUserId}
+	    , CURRENT_TIMESTAMP
+	    , #{createUserId}
+	    , 1
+    )
+  </insert>
+
+  <select id="findByPk">
+    select
+	      session_id    --セッションID
+	    , user_id       --ユーザ識別子
+	    , createDate    --作成日時
+	    , createUserId  --作成者ID
+	    , updateDate    --更新日時
+	    , updateUserId  --更新者ID
+	    , versionNo     --バージョンNo
+    from t_session
+    where session_id = #{session_id}
+  </select>
+
+  <delete id="findByPk">
+    delete from t_session
+    where session_id = #{session_id}
+  </delete>
+</mapper>

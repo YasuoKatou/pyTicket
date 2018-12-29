@@ -22,6 +22,7 @@ class TicketDaoManager:
         for xml in p.glob('*.xml'):
             dao = get_dao(xml)
             cls._dao_map[dao.dao_name] = dao
+            print('dao :', dao.dao_name)
         return super().__new__(cls)
     @classmethod
     def get_instance(cls):

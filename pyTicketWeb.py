@@ -5,6 +5,8 @@ sys.dont_write_bytecode = True
 import json
 from bottle import post, request, run, HTTPResponse
 
+from dao.ticket_dao_manager import TicketDaoManager
+
 #サービスクラスのルートパス
 _SERVICE_ROOT = 'service'
 
@@ -19,6 +21,8 @@ def make_service_map():
     from pathlib import Path
     import importlib
 
+    dao_manager = TicketDaoManager.get_instance()
+
     svc_map = {}
     p = Path(__file__).parent / _SERVICE_ROOT
     for f in p.glob('*.py'):
@@ -28,8 +32,9 @@ def make_service_map():
         im = '{0}.{1}'.format(_SERVICE_ROOT, cn)
         m = importlib.import_module(im)
         inst = getattr(m, cn)()
-        print(inst.mapper_name, '->', im)
-        svc_map[inst.mapper_name] = inst
+        print(inst.service_name, '->', im)
+        svc_map[inst.service_name] = inst
+        inst.dao_manager = dao_manager
     return svc_map
 
 def make_controller_map(servicMap):
@@ -48,8 +53,8 @@ def make_controller_map(servicMap):
         im = '{0}.{1}'.format(_CONTROLLER_ROOT, cn)
         m = importlib.import_module(im)
         inst = getattr(m, cn)()
-        print(inst.mapper_name, '->', im)
-        _controller_map[inst.mapper_name] = inst
+        print(inst.controller_name, '->', im)
+        _controller_map[inst.controller_name] = inst
         inst.set_service_map(servicMap)
 
 def get_controller(path):
@@ -57,17 +62,21 @@ def get_controller(path):
     POST時のパスからコントローラを取得する.
     '''
     global _controller_map
-    return _controller_map[path]
+    for name, inst in _controller_map.items():
+        method = inst.hasMapping(path)
+        if method:
+            return inst, method
+    return None, None
 
-@post('/logout')
 @post('/login')
+@post('/login/prepare')
+@post('/logout')
 def login():
     '''
-    $ curl -H "Content-Type: application/json" -X POST -d '{ "user_id" : "yasuo katou" }' http://localhost:8080/login
-    {"message": "hello yasuo katou"}
     '''
-    c = get_controller(request.path)
-    return c.execute_post(request)
+    c, m = get_controller(request.path)
+    getattr(c, m)(request)
+    #return c.execute_post(request)
 
 #サービスの一覧を作成
 svc_map = make_service_map()

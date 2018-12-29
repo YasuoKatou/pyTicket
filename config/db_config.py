@@ -2,5 +2,5 @@
 class DBConfig:
     @staticmethod
     def getConnectUrl():
-        return 'postgresql://demo:demouser@localhost:5432/demo'
+        return 'postgresql://ticket-admin:TicketAdmin@localhost:5432/ticket'
 #[EOF]

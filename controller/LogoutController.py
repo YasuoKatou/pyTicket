@@ -8,11 +8,14 @@ class LogoutController(BaseController):
     '''
     def __init__(self):
         '''
-        URLのマッピング文字列を設定
+        URLのマッピングを設定
         '''
-        super().__init__('/logout')
+        mapping = [
+            # ログアウト処理
+            {'url': '/logout', 'method': 'doLogout'}]
+        super().__init__('logout', mapping)
 
-    def execute_post(self, request):
+    def doLogout(self, request):
         '''
         ログアウト処理を実行する.
         '''
