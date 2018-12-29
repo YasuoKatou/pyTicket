@@ -20,9 +20,10 @@ class LoginService(BaseService):
         rec = {'session_id':sid, 'user_id':None, 'createUserId':1}
         dao.execute(kwargs['cursor'], 'insert', rec)
         print ('insert', sid)
+        return {'session_id': sid}
 
     @Transactional
-    def doLogin(self, request, **kwargs):
+    def doLogin(self, request, *args, **kwargs):
         print('type of request :', type(request))
         key_user_id = 'user_id'
         user_id = request[key_user_id]

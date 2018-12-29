@@ -75,8 +75,11 @@ def login():
     '''
     '''
     c, m = get_controller(request.path)
-    getattr(c, m)(request)
-    #return c.execute_post(request)
+    result = getattr(c, m)(request)
+    print('service result :', result)
+    resp = HTTPResponse(status=200, body=json.dumps(result))
+    resp.set_header('Content-type', 'application/json')
+    return resp
 
 #サービスの一覧を作成
 svc_map = make_service_map()
