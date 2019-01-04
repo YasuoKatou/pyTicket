@@ -1,7 +1,6 @@
 # -*- coding:utf-8 -*-
-import re
 import xml.etree.ElementTree as ET
-from logging import getLogger, DEBUG
+from logging import getLogger
 
 from util.syntactic_ana import TestTagExp
 from util.pg_sql_editor import SqlEditor as SQL_EDITOR
@@ -47,20 +46,55 @@ class DaoBase:
             query.extend(elm.tail.split('\n'))
         return  '\n'.join(query)
 
+    def _make_column_list(self, desc):
+        '''
+        カラム名一覧を作成
+        '''
+        return [col.name for col in desc]
+
+    def _make_dict_rec(self, name_list, rec):
+        '''
+        辞書型のレコードを作成
+        @param name_list カラム名一覧
+        @param rec レコードの配列
+        '''
+        r = {}
+        for i in range(0, len(name_list)):
+            r[name_list[i]] = rec[i]
+        return r
+
     def _execSql(self, cur, source, values):
         #_Log.debug(ET.tostring(source))
         #_Log.debug(values)
         query = self._edit_if_tag(source, values)
-        #_Log.debug(query)
+        #_Log.debug('sql :', query)
         q, v = SQL_EDITOR.edit_valiables(query, values)
-        #_Log.debug('query : ' + q)
+        #_Log.debug('dml : ' + q)
         #_Log.debug('value : ' + str(v))
+        #_Log.debug('cursor closed : ' + str(cur.closed))
         cur.execute(q, v)
+        #_Log.debug('dml : ' + str(cur.query))
+        #_Log.debug('status message : ' + cur.statusmessage)
+        #_Log.debug('cursor name : ' + str(cur.name))
+        #_Log.debug('description : ' + str(len(cur.description)))
+        nml = self._make_column_list(cur.description)
+        recs = cur.fetchall()
+        #_Log.debug('rownumber : ' + str(cur.rownumber))
+        #_Log.debug('rows : ' + str(recs))
+        if cur.rownumber == 0:
+            return None
+        elif cur.rownumber == 1:
+            return self._make_dict_rec(nml, recs[0])
+        else:
+            dict_recs = []
+            for i in range(0, len(recs)):
+                dict_recs.append(self._make_dict_rec(nml, recs[i]))
+            return dict_recs
     def execute(self, cur, name, argv):
         if name in self._dml:
-            self._execSql(cur, self._dml[name], argv)
+            return self._execSql(cur, self._dml[name], argv)
         else:
-            NotImplementedError('no such method (' + name + ')')
+            raise NotImplementedError('no such method (' + name + ')')
 
 def get_dao(xml_path):
     return DaoBase(xml_path)

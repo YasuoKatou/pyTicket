@@ -39,7 +39,7 @@
     where session_id = #{session_id}
   </select>
 
-  <delete id="findByPk">
+  <delete id="deleteByPk">
     delete from t_session
     where session_id = #{session_id}
   </delete>

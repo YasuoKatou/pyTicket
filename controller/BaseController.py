@@ -1,7 +1,5 @@
 # -*- coding:utf-8 -*-
 
-from bottle import HTTPResponse
-
 class BaseController:
     '''
     コントローラクラスの基本クラス
@@ -18,10 +16,6 @@ class BaseController:
         self._service_map = map
     def get_service(self, key):
         return self._service_map[key]
-    def edit_response(self, body):
-        r = HTTPResponse(status=200, body=body)
-        r.set_header('Content-Type', 'application/json')
-        return r
     def hasMapping(self, path):
         for map in self._mapping:
             if map['url'] == path:

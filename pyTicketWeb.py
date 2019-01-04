@@ -3,9 +3,14 @@ import sys
 sys.dont_write_bytecode = True
 
 import json
+import logging
 from bottle import post, request, run, HTTPResponse
 
 from dao.ticket_dao_manager import TicketDaoManager
+
+#Log level
+logging.basicConfig(level=logging.DEBUG)
+#logging.basicConfig(level=logging.INFO)
 
 #サービスクラスのルートパス
 _SERVICE_ROOT = 'service'
@@ -68,6 +73,12 @@ def get_controller(path):
             return inst, method
     return None, None
 
+def edit_response(body):
+    r = HTTPResponse(status=200, body=body)
+    r.set_header('Content-Type', 'application/json')
+    return r
+
+
 @post('/login')
 @post('/login/prepare')
 @post('/logout')
@@ -76,10 +87,7 @@ def login():
     '''
     c, m = get_controller(request.path)
     result = getattr(c, m)(request)
-    print('service result :', result)
-    resp = HTTPResponse(status=200, body=json.dumps(result))
-    resp.set_header('Content-type', 'application/json')
-    return resp
+    return edit_response(json.dumps(result))
 
 #サービスの一覧を作成
 svc_map = make_service_map()
