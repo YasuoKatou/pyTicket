@@ -96,6 +96,7 @@ svc_map = make_service_map()
 make_controller_map(svc_map)
 
 #開始
-run(host='localhost', port=8080)
+#run(host='localhost', port=8080)
+run(host='0.0.0.0', port=8080)
 
 #[EOF]
