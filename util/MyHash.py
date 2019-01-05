@@ -21,3 +21,5 @@ if __name__ == '__main__':
 	pwd = u'admin'
 	h_pwd = make_hash(h_lid, pwd)
 	print('passwd :', h_pwd)
+
+#[EOF]
