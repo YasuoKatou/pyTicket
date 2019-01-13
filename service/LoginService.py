@@ -74,4 +74,13 @@ class LoginService(BaseService):
         sessionDao.execute(cursor, 'deleteByPk', {'session_id': sid})
 
         return {'session_id': new_sid}
+
+    @Transactional
+    def doLogout(self, request, *args, **kwargs):
+        sessionDao = super().dao_manager.get_dao('sessionDao')
+        cursor = kwargs['cursor']
+        sid = request['session_id']
+        sessionDao.execute(cursor, 'deleteByPk', {'session_id': sid})
+        _Log.debug('delete session id : ' + sid)
+        return {'result': True}
 #[EOF]

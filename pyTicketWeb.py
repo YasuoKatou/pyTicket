@@ -82,7 +82,7 @@ def edit_response(body):
 @post('/login')
 @post('/login/prepare')
 @post('/logout')
-def login():
+def login_out():
     '''
     '''
     c, m = get_controller(request.path)

@@ -17,7 +17,9 @@ class LoginController(BaseController):
             # ログイン前処理
             {'url': '/login/prepare', 'method': 'doPreapre'},
             # ログイン処理
-            {'url': '/login', 'method': 'doLogin'}]
+            {'url': '/login', 'method': 'doLogin'},
+            # ログアウト処理
+            {'url': '/logout', 'method': 'doLogout'}]
         super().__init__('login', mapping)
 
     def doPreapre(self, request):
@@ -27,7 +29,7 @@ class LoginController(BaseController):
         '''
         #ログインサービスを取得
         svc = super().get_service('login')
-        #ログイン前処理サービスを実行
+        #ログイン前処理を実行
         r = svc.prepareLogin()
         #クライアントに結果を戻す
         return r
@@ -39,8 +41,19 @@ class LoginController(BaseController):
         '''
         #ログインサービスを取得
         svc = super().get_service('login')
-        #ログインサービスを実行
+        #ログイン処理を実行
         r = svc.doLogin(request.json);
         #クライアントにログイン結果を戻す
+        return r
+
+    def doLogout(self, request):
+        '''
+        ログアウト処理を実行する.
+        '''
+        #ログインサービスを取得
+        svc = super().get_service('login')
+        #ログアウト処理を実行
+        r = svc.doLogout(request.json);
+        #クライアントにログアウト結果を戻す
         return r
 #[EOF]
