@@ -20,7 +20,7 @@ class LoginService(BaseService):
         sid = rand_n()
         dao = super().dao_manager.get_dao('sessionDao')
         rec = {'session_id':sid, 'user_id':None, 'createUserId':1}
-        dao.execute(kwargs['cursor'], 'insert', rec)
+        dao.insert(kwargs['cursor'], rec)
         _Log.debug('insert : ' + sid)
         return {'session_id': sid}
 
@@ -34,7 +34,7 @@ class LoginService(BaseService):
         #-------------------------------
         #ログイン用セッションIDを取得
         sessionDao = super().dao_manager.get_dao('sessionDao')
-        ts = sessionDao.execute(cursor, 'findByPk', {'session_id': sid})
+        ts = sessionDao.findByPk(cursor, {'session_id': sid})
         if ts is None:
             #ログイン用セッションIDが取得できなかった場合
             raise Exception('no temp session id')
@@ -56,7 +56,7 @@ class LoginService(BaseService):
         #-------------------------------
         #ユーザIDとパスワードを確認
         userMasterDao = super().dao_manager.get_dao('userMasterDao')
-        um = userMasterDao.execute(cursor, 'findByLoginId', {'login_id': dec_login_id})
+        um = userMasterDao.findByLoginId(cursor, {'login_id': dec_login_id})
         if um is None:
             #ユーザマスタが取得できなかった場合
             raise Exception('no user master')
@@ -67,11 +67,11 @@ class LoginService(BaseService):
         #正式なセッションIDを作成し、登録
         new_sid = rand_n()
         rec = {'session_id':new_sid, 'user_id':dec_login_id, 'createUserId':1}
-        sessionDao.execute(cursor, 'insert', rec)
+        sessionDao.insert(cursor, rec)
         _Log.debug('new session id : ' + new_sid)
         #-------------------------------
         #ログイン用セッションIDを削除
-        sessionDao.execute(cursor, 'deleteByPk', {'session_id': sid})
+        sessionDao.deleteByPk(cursor, {'session_id': sid})
 
         return {'session_id': new_sid}
 
@@ -80,7 +80,7 @@ class LoginService(BaseService):
         sessionDao = super().dao_manager.get_dao('sessionDao')
         cursor = kwargs['cursor']
         sid = request['session_id']
-        sessionDao.execute(cursor, 'deleteByPk', {'session_id': sid})
+        sessionDao.deleteByPk(cursor, {'session_id': sid})
         _Log.debug('delete session id : ' + sid)
         return {'result': True}
 #[EOF]

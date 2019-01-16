@@ -1,11 +1,28 @@
 # -*- coding:utf-8 -*-
 import xml.etree.ElementTree as ET
 from logging import getLogger
+from inspect import stack
+import re
 
 from util.syntactic_ana import TestTagExp
 from util.pg_sql_editor import SqlEditor as SQL_EDITOR
 
 _Log = getLogger(__name__)
+
+#Dao呼び出しパターン(xxDao.insert(param))
+FN_RE = re.compile(r'.+\.(?P<name>\w+).+')
+
+def addFuncName(func):
+    def wrapper(self, *args):
+        #呼び出し元のソースから呼び出す関数名を取り出す
+        stk = stack()
+        fn = stk[1].code_context
+        m = re.match(FN_RE, fn[0])
+        r = list(m.groups('mame'))[0]
+ 
+        #呼び出し関数名を引数に追加して呼び出す
+        return func(self, r, *args)
+    return wrapper
 
 class DaoBase:
     def __init__(self, xml_path):
@@ -96,7 +113,9 @@ class DaoBase:
                 for i in range(0, len(recs)):
                     dict_recs.append(self._make_dict_rec(nml, recs[i]))
                 return dict_recs
-    def execute(self, cur, name, argv):
+
+    @addFuncName
+    def _execute(self, name, cur, argv):
         if name in self._dml_select:
             return self._execSql(cur, self._dml_select[name], argv, True)
         elif name in self._dml_insert:
@@ -107,6 +126,10 @@ class DaoBase:
             return self._execSql(cur, self._dml_delete[name], argv, False)
         else:
             raise NotImplementedError('no such method (' + name + ')')
+
+    def __getattr__(self, name):
+        #print('call', name)
+        return self._execute
 
 def get_dao(xml_path):
     return DaoBase(xml_path)
