@@ -5,11 +5,9 @@ import json
 from logging import getLogger, DEBUG
 
 from dao.ticket_dao_manager import TicketDaoManager
+from config.db_config import DBConfig
 
 _Log = getLogger(__name__)
-
-#_DB_URL = 'postgresql://ticket_admin:TicketAdmin@192.168.3.172:5432/ticket'
-_DB_URL = 'postgresql://ticket-admin:TicketAdmin@localhost:5432/ticket'
 
 def _dropTable(cur, ddl):
     try:
@@ -38,7 +36,7 @@ def _createTables():
             ddl_delete[child.attrib['id']] = child.text.strip()
 
     #DBに接続
-    with psycopg2.connect(_DB_URL) as conn:
+    with psycopg2.connect(DBConfig.getConnectUrl()) as conn:
         #トランザクション制御を行わない
         conn.autocommit = True
         #DDLを実行するカーソルを開く
@@ -54,11 +52,11 @@ def _createTables():
 
 def _setInitData():
     _JSON_PATH = 'ddl/ap_init_data.json'
-    with open(_JSON_PATH, 'r') as jf:
+    with open(_JSON_PATH, 'r', encoding='utf-8') as jf:
         init_data = json.load(jf)
     dao_manager = TicketDaoManager.get_instance()
     #DBに接続
-    with psycopg2.connect(_DB_URL) as conn:
+    with psycopg2.connect(DBConfig.getConnectUrl()) as conn:
         #DDLを実行するカーソルを開く
         with conn.cursor() as cur:
             for tbl in init_data['initDataList']:
@@ -66,7 +64,12 @@ def _setInitData():
                 dao = dao_manager.get_dao(tbl['dao'])
                 if dao:
                     for rec in tbl['values']:
-                        dao.execute(cur, tbl['method'], rec)
+                        if tbl['method'] == 'insert':
+                            dao.insert(cur, rec)
+                        elif tbl['method'] == 'appendItem':
+                            dao.appendItem(cur, rec)
+                        else:
+                            raise Exception('no such method (' + tbl['method'] + ')')
                 else:
                     _Log.debug('no DAO : ' + tbl['dao'])
         #コミット
