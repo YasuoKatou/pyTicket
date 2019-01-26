@@ -9,7 +9,8 @@
 
   <insert id="insert">
     insert into m_user (
-        login_id --ログインID
+        id       --ユーザ識別子
+      , login_id --ログインID
       , passwd   --パスワード
       , name1    --性
       , name2    --名
@@ -18,7 +19,8 @@
       , createUserId  --作成者ID
       , updateUserId  --更新者ID
     ) values (
-        #{login_id}
+        #{id}
+      , #{login_id}
       , #{passwd}
       , #{name1}
       , #{name2}

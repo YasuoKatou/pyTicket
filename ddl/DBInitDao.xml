@@ -12,9 +12,9 @@
 			, alive varchar(10) not null default 'yes'	--プロジェクト進行中
 			, opened varchar(10) not null default 'no'	--第三者に公開
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
-			, createUserId bigint not null								--作成者ID
+			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
-			, updateUserId bigint not null								--更新者ID
+			, updateUserId int not null									--更新者ID
 			, versionNo int not null default 1							--バージョンNo
 		)
 	</insert>
@@ -24,16 +24,17 @@
 
 	<insert id="createUserMaster">
 		create table m_user (
-			  login_id varchar(256) primary key	--ログインID
+			  id int primary key				--ユーザ識別子
+			, login_id varchar(256) unique		--ログインID
 			, passwd varchar(256) not null		--パスワード（暗号化）
 			, name1 varchar(256) not null		--性
 			, name2 varchar(256) not null		--名
 			, email varchar(256) not null		--メールアドレス
 			, language_id bigint not null		--言語ID
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
-			, createUserId bigint not null								--作成者ID
+			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
-			, updateUserId bigint not null								--更新者ID
+			, updateUserId int not null									--更新者ID
 			, versionNo int not null default 1							--バージョンNo
 		)
 	</insert>
@@ -48,9 +49,9 @@
 			, country varchar(64) not null		--国名
 			, remarks varchar(64)				--説明
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
-			, createUserId bigint not null								--作成者ID
+			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
-			, updateUserId bigint not null								--更新者ID
+			, updateUserId int not null									--更新者ID
 			, versionNo int not null default 1							--バージョンNo
 		)
 	</insert>
@@ -63,9 +64,9 @@
 			  id bigint	primary key				--識別子（自動付番）
 			, name varchar(64) not null			--ロールグループ名
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
-			, createUserId bigint not null								--作成者ID
+			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
-			, updateUserId bigint not null								--更新者ID
+			, updateUserId int not null									--更新者ID
 			, versionNo int not null default 1							--バージョンNo
 		)
 	</insert>
@@ -79,9 +80,9 @@
 			, name varchar(64) not null			--ロール名
 			, group_id bigint not null			--ロールグループ識別子
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
-			, createUserId bigint not null								--作成者ID
+			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
-			, updateUserId bigint not null								--更新者ID
+			, updateUserId int not null									--更新者ID
 			, versionNo int not null default 1							--バージョンNo
 		)
 	</insert>
@@ -92,11 +93,11 @@
 	<insert id="createSessionTran">
 		create table t_session (
 			  session_id varchar(64) primary key	--セッションID
-			, user_id varchar(256)					--ユーザ識別子
+			, user_id int							--ユーザ識別子
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
-			, createUserId bigint not null								--作成者ID
+			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
-			, updateUserId bigint not null								--更新者ID
+			, updateUserId int not null									--更新者ID
 			, versionNo int not null default 1							--バージョンNo
 		)
 	</insert>
@@ -110,9 +111,9 @@
 			, name varchar(256) not null			--ロール名称
 			, description varchar(1024)				--説明
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
-			, createUserId bigint not null								--作成者ID
+			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
-			, updateUserId bigint not null								--更新者ID
+			, updateUserId int not null									--更新者ID
 			, versionNo int not null default 1							--バージョンNo
 		)
 	</insert>
@@ -125,9 +126,9 @@
 			  roll_name_id bigint 					--ロール名称ID
 			, roll_item_id bigint 					--ロール項目ID
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
-			, createUserId bigint not null								--作成者ID
+			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
-			, updateUserId bigint not null								--更新者ID
+			, updateUserId int not null									--更新者ID
 			, versionNo int not null default 1							--バージョンNo
 			, primary key(roll_name_id, roll_item_id)
 		)
@@ -149,9 +150,9 @@
 			, progress_id bigint					--チケットの進捗
 			, project_id bigint						--プロジェクトID
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
-			, createUserId bigint not null								--作成者ID
+			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
-			, updateUserId bigint not null								--更新者ID
+			, updateUserId int not null									--更新者ID
 			, versionNo int not null default 1							--バージョンNo
 		)
 	</insert>
@@ -167,9 +168,9 @@
 			, root_memo_id bigint not null			--ルートメモID
 			, parent_memo_id bigint not null		--親メモID
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
-			, createUserId bigint not null								--作成者ID
+			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
-			, updateUserId bigint not null								--更新者ID
+			, updateUserId int not null									--更新者ID
 			, versionNo int not null default 1							--バージョンNo
 			, primary key(ticket_id, id)
 		)
@@ -191,9 +192,9 @@
 			, progress_id bigint					--チケットの進捗
 			, project_id bigint						--プロジェクトID
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
-			, createUserId bigint not null								--作成者ID
+			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
-			, updateUserId bigint not null								--更新者ID
+			, updateUserId int not null									--更新者ID
 			, versionNo int not null default 1							--バージョンNo
 			, primary key(id, versionNo)
 		)
@@ -210,9 +211,9 @@
 			, root_memo_id bigint not null			--ルートメモID
 			, parent_memo_id bigint not null		--親メモID
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
-			, createUserId bigint not null								--作成者ID
+			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
-			, updateUserId bigint not null								--更新者ID
+			, updateUserId int not null									--更新者ID
 			, versionNo int not null default 1							--バージョンNo
 			, primary key(id, ticket_id, versionNo)
 		)
@@ -229,9 +230,9 @@
 			, name varchar(256) not null			--ステータス名称
 			, available varchar(10) not null		--有効フラグ
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
-			, createUserId bigint not null								--作成者ID
+			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
-			, updateUserId bigint not null								--更新者ID
+			, updateUserId int not null									--更新者ID
 			, versionNo int not null default 1							--バージョンNo
 			, primary key(project_id, id)
 		)
@@ -248,9 +249,9 @@
 			, name varchar(256) not null			--ステータス名称
 			, available varchar(10) not null		--有効フラグ
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
-			, createUserId bigint not null								--作成者ID
+			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
-			, updateUserId bigint not null								--更新者ID
+			, updateUserId int not null									--更新者ID
 			, versionNo int not null default 1							--バージョンNo
 			, primary key(project_id, id)
 		)
@@ -267,9 +268,9 @@
 			, name varchar(256) not null			--進捗名称
 			, available varchar(10) not null		--有効フラグ
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
-			, createUserId bigint not null								--作成者ID
+			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
-			, updateUserId bigint not null								--更新者ID
+			, updateUserId int not null									--更新者ID
 			, versionNo int not null default 1							--バージョンNo
 			, primary key(project_id, id)
 		)
@@ -286,9 +287,9 @@
 			, name varchar(256) not null			--種類名称
 			, available varchar(10) not null		--有効フラグ
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
-			, createUserId bigint not null								--作成者ID
+			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
-			, updateUserId bigint not null								--更新者ID
+			, updateUserId int not null									--更新者ID
 			, versionNo int not null default 1							--バージョンNo
 			, primary key(project_id, id)
 		)
@@ -305,9 +306,9 @@
 			, name varchar(256) not null			--優先順位名称
 			, available varchar(10) not null		--有効フラグ
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
-			, createUserId bigint not null								--作成者ID
+			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
-			, updateUserId bigint not null								--更新者ID
+			, updateUserId int not null									--更新者ID
 			, versionNo int not null default 1							--バージョンNo
 			, primary key(project_id, id)
 		)
