@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*-
+
 from Crypto.Cipher import AES
 
 def encryption(key, data):

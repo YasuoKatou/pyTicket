@@ -33,7 +33,8 @@
 
   <select id="findByLoginId" resultMap="userMasterResultMap">
     select
-        T1.login_id --ログインID
+        T1.id       --ユーザ識別子
+      , T1.login_id --ログインID
       , T1.passwd   --パスワード
       , T1.name1    --性
       , T1.name2    --名

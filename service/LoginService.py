@@ -66,7 +66,7 @@ class LoginService(BaseService):
         #-------------------------------
         #正式なセッションIDを作成し、登録
         new_sid = rand_n()
-        rec = {'session_id':new_sid, 'user_id':dec_login_id, 'createUserId':1}
+        rec = {'session_id':new_sid, 'user_id':um['id'], 'createUserId':1}
         sessionDao.insert(cursor, rec)
         _Log.debug('new session id : ' + new_sid)
         #-------------------------------
