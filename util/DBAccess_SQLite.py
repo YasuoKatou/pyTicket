@@ -1,33 +1,31 @@
 # -*- coding:utf-8 -*-
-import psycopg2
-from psycopg2.extras import DictCursor
+import sqlite3
+
+from config.db_config import DBConfig
 from logging import getLogger
 
 _Log = getLogger(__name__)
 
-
-import config.db_config as DBC
-
-if DBC.DBConfig.getDBType() == DBC.DBType_PostgreSQL:
-    import util.DBAccess_PostgreSQL as DBA
-elif DBC.DBConfig.getDBType() == DBC.DBType_SQLite:
-    import util.DBAccess_SQLite as DBA
-Transactional = DBA.Transactional
-
-'''
 def Transactional(func):
-    def wrapper(self, *args, **kwargs):
+    def wrapper(*args, **kwargs):
         _Log.debug('start Transactional')
         #DBに接続
         _Log.debug('DB URL : ' + DBConfig.getConnectUrl())
-        with psycopg2.connect(dsn=DBConfig.getConnectUrl()) as conn:
+        with sqlite3.connect(DBConfig.getConnectUrl(), isolation_level='EXCLUSIVE') as conn:
             #トランザクション制御
-            conn.autocommit = False
+            #conn.autocommit = False    #これは、PostgreSQL(psycopg2)の設定
             try:
                 #カーソルを開く
-                with conn.cursor(cursor_factory=DictCursor) as cur:
+                '''
+                with conn.cursor() as cur:
                     kwargs['cursor'] = cur
-                    r = func(self, *args, **kwargs)
+                    #r = func(self, *args, **kwargs)
+                    r = func(*args, **kwargs)
+                '''
+                cur = conn.cursor()     # SQLiteでは、withが使えない
+                kwargs['cursor'] = cur
+                r = func(*args, **kwargs)
+
                 conn.commit()
             except Exception as ex:
                 _Log.error(str(ex))
@@ -37,5 +35,5 @@ def Transactional(func):
         _Log.debug('end Transactional')
         return r
     return wrapper
-'''
+
 #[EOF]

@@ -3,7 +3,12 @@
 import json
 from logging import getLogger
 from service.BaseService import BaseService
-from util.DBAccess import Transactional
+
+from config.db_config import DBConfig, DBType_PostgreSQL
+if DBConfig.getDBType() = DBType_PostgreSQL:
+    from util.DBAccess import Transactional
+else:
+    from utik.DBAccess_SQLite import Transactional
 
 from util.MyRandom import rand_n
 from util.MyEncryption import decryption

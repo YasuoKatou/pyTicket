@@ -1,20 +1,11 @@
 # -*- coding:utf-8 -*-
 import psycopg2
 from psycopg2.extras import DictCursor
+from config.db_config import DBConfig
 from logging import getLogger
 
 _Log = getLogger(__name__)
 
-
-import config.db_config as DBC
-
-if DBC.DBConfig.getDBType() == DBC.DBType_PostgreSQL:
-    import util.DBAccess_PostgreSQL as DBA
-elif DBC.DBConfig.getDBType() == DBC.DBType_SQLite:
-    import util.DBAccess_SQLite as DBA
-Transactional = DBA.Transactional
-
-'''
 def Transactional(func):
     def wrapper(self, *args, **kwargs):
         _Log.debug('start Transactional')
@@ -37,5 +28,5 @@ def Transactional(func):
         _Log.debug('end Transactional')
         return r
     return wrapper
-'''
+
 #[EOF]

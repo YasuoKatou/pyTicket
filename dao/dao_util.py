@@ -5,7 +5,13 @@ from inspect import stack
 import re
 
 from util.syntactic_ana import TestTagExp
-from util.pg_sql_editor import SqlEditor as SQL_EDITOR
+
+import config.db_config as DBC
+if DBC.DBConfig.getDBType() == DBC.DBType_PostgreSQL:
+    from util.pg_sql_editor import SqlEditor as SQL_EDITOR
+elif DBC.DBConfig.getDBType() == DBC.DBType_SQLite:
+    from util.sqlite_sql_editor import SqlEditor as SQL_EDITOR
+
 
 _Log = getLogger(__name__)
 
