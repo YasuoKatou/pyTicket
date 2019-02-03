@@ -4,14 +4,10 @@ import json
 from logging import getLogger
 from service.BaseService import BaseService
 
-from config.db_config import DBConfig, DBType_PostgreSQL
-if DBConfig.getDBType() = DBType_PostgreSQL:
-    from util.DBAccess import Transactional
-else:
-    from utik.DBAccess_SQLite import Transactional
-
 from util.MyRandom import rand_n
 from util.MyEncryption import decryption
+
+import util.DBAccess as DBA
 
 _Log = getLogger(__name__)
 
@@ -19,9 +15,9 @@ class LoginService(BaseService):
     def __init__(self):
         super().__init__('login')
 
-    @Transactional
+    @DBA.Transactional
     def prepareLogin(self, *args, **kwargs):
-        _Log.debug('login prepared service start')
+        _Log.debug('login prepare service start')
         sid = rand_n()
         dao = super().dao_manager.get_dao('sessionDao')
         rec = {'session_id':sid, 'user_id':None, 'createUserId':1}
@@ -29,7 +25,7 @@ class LoginService(BaseService):
         _Log.debug('insert : ' + sid)
         return {'session_id': sid}
 
-    @Transactional
+    @DBA.Transactional
     def doLogin(self, request, *args, **kwargs):
         _Log.debug('login service start')
         sid = request['session_id']
@@ -80,7 +76,7 @@ class LoginService(BaseService):
 
         return {'session_id': new_sid}
 
-    @Transactional
+    @DBA.Transactional
     def doLogout(self, request, *args, **kwargs):
         sessionDao = super().dao_manager.get_dao('sessionDao')
         cursor = kwargs['cursor']

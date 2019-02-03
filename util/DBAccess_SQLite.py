@@ -8,9 +8,9 @@ _Log = getLogger(__name__)
 
 def Transactional(func):
     def wrapper(*args, **kwargs):
-        _Log.debug('start Transactional')
+        #_Log.debug('start Transactional')
         #DBに接続
-        _Log.debug('DB URL : ' + DBConfig.getConnectUrl())
+        #_Log.debug('DB URL : ' + DBConfig.getConnectUrl())
         with sqlite3.connect(DBConfig.getConnectUrl(), isolation_level='EXCLUSIVE') as conn:
             #トランザクション制御
             #conn.autocommit = False    #これは、PostgreSQL(psycopg2)の設定

@@ -98,28 +98,33 @@ class DaoBase:
         #_Log.debug('dml : ' + q)
         #_Log.debug('value : ' + str(v))
         #_Log.debug('cursor closed : ' + str(cur.closed))
-        cur.execute(q, v)
-        #_Log.debug('dml : ' + str(cur.query))
-        #_Log.debug('status message : ' + cur.statusmessage)
-        #_Log.debug('cursor name : ' + str(cur.name))
-        if not isSelect:
-            return None
-        #_Log.debug('description : ' + str(len(cur.description)))
-        recs = cur.fetchall()
-        #_Log.debug('rownumber : ' + str(cur.rownumber))
-        #_Log.debug('rows : ' + str(recs))
-        if cur.rownumber == 0:
-            return None
-        else:
-            nml = self._make_column_list(cur.description)
-            if cur.rownumber == 1:
-                return self._make_dict_rec(nml, recs[0])
+        try:
+            cur.execute(q, v)
+            #_Log.debug('dml : ' + str(cur.query))
+            #_Log.debug('status message : ' + cur.statusmessage)
+            #_Log.debug('cursor name : ' + str(cur.name))
+            if not isSelect:
+                return None
+            #_Log.debug('description : ' + str(len(cur.description)))
+            recs = cur.fetchall()
+            #_Log.debug('rownumber : ' + str(cur.rownumber))
+            #_Log.debug('rows : ' + str(recs))
+            if cur.rownumber == 0:
+                return None
             else:
-                dict_recs = []
-                for i in range(0, len(recs)):
-                    dict_recs.append(self._make_dict_rec(nml, recs[i]))
-                return dict_recs
-
+                nml = self._make_column_list(cur.description)
+                if cur.rownumber == 1:
+                    return self._make_dict_rec(nml, recs[0])
+                else:
+                    dict_recs = []
+                    for i in range(0, len(recs)):
+                        dict_recs.append(self._make_dict_rec(nml, recs[i]))
+                    return dict_recs
+        except Exception as ex:
+            _Log.error(str(ex))
+            _Log.error('dml : ' + q)
+            _Log.error('val : ' + v)
+            raise ex
     @addFuncName
     def _execute(self, name, cur, argv):
         if name in self._dml_select:
