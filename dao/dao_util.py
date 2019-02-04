@@ -109,11 +109,12 @@ class DaoBase:
             recs = cur.fetchall()
             #_Log.debug('rownumber : ' + str(cur.rownumber))
             #_Log.debug('rows : ' + str(recs))
-            if cur.rownumber == 0:
+            rowcount = len(recs)
+            if rowcount == 0:
                 return None
             else:
                 nml = self._make_column_list(cur.description)
-                if cur.rownumber == 1:
+                if rowcount == 1:
                     return self._make_dict_rec(nml, recs[0])
                 else:
                     dict_recs = []
@@ -123,7 +124,7 @@ class DaoBase:
         except Exception as ex:
             _Log.error(str(ex))
             _Log.error('dml : ' + q)
-            _Log.error('val : ' + v)
+            _Log.error('val : ' + str(v))
             raise ex
     @addFuncName
     def _execute(self, name, cur, argv):

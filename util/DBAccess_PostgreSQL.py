@@ -7,7 +7,7 @@ from logging import getLogger
 _Log = getLogger(__name__)
 
 def Transactional(func):
-    def wrapper(self, *args, **kwargs):
+    def wrapper(*args, **kwargs):
         _Log.debug('start Transactional')
         #DBに接続
         _Log.debug('DB URL : ' + DBConfig.getConnectUrl())
@@ -18,7 +18,7 @@ def Transactional(func):
                 #カーソルを開く
                 with conn.cursor(cursor_factory=DictCursor) as cur:
                     kwargs['cursor'] = cur
-                    r = func(self, *args, **kwargs)
+                    r = func(*args, **kwargs)
                 conn.commit()
             except Exception as ex:
                 _Log.error(str(ex))
