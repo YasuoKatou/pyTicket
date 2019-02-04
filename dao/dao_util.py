@@ -76,7 +76,12 @@ class DaoBase:
         '''
         カラム名一覧を作成
         '''
-        return [col.name for col in desc]
+        if DBC.DBConfig.getDBType() == DBC.DBType_PostgreSQL:
+            return [col.name for col in desc]
+        elif DBC.DBConfig.getDBType() == DBC.DBType_SQLite:
+            return [col[0] for col in desc]
+        else:
+            return None
 
     def _make_dict_rec(self, name_list, rec):
         '''
