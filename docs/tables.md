@@ -15,7 +15,7 @@
 |No|名称|物理名|説明|
 |:-:|:--|:--|:--|
 |1|セッション|t_session||
-|2|ロール名|t_roll_name|？？|
+|2|ロール名|t_roll_name||
 |3|ロール許可|t_roll_setting||
 |4|チケット|t_ticket||
 |5|チケットメモ|t_ticket_memo||
@@ -35,24 +35,115 @@
 
 ### (1) マスタ系
 #### a. プロジェクト（m_project）
-工事中
-#### b. ユーザ（m_user）
-工事中
-#### c. 言語（m_language）
-工事中
-#### d. ロールグループ名（m_rollGroup）
-工事中
-#### e. ロール項目名（m_rollItem）
-工事中
 
+|No|列名称|物理名|型|size|PK|null|default|説明|
+|:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
+|1|ID|id|bigint||1|||自動付番|
+|2|名称|name|varchar|256|||||
+|3|説明|description|varchar|1024|||||
+|4|管理者ID|manager_id|bigint|||no|||
+|5|進行中|alive|varchar|10||no|'yes'||
+|6|第三者に公開|opened|varchar|10||no|'no'||
+|7|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
+|8|作成者ID|createUserId|int|||no|||
+|9|更新日時|updateDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
+|10|更新者ID|updateUserId|int|||no|||
+|11|バージョンNo|versionNo|int|||no|1||
+
+#### b. ユーザ（m_user）
+
+|No|列名称|物理名|型|size|PK|null|default|説明|
+|:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
+|1|ID|id|bigint||1||||
+|2|ログインID|login_id|varchar|256||||unique|
+|3|パスワード|passwd|varchar|256||no||暗号化|
+|4|性|name1|varchar|256||no|||
+|5|名|name2|varchar|256||no|||
+|6|メルアド|email|varchar|256||no|||
+|7|言語ID|language_id|bigint|||no|||
+|8|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
+|9|作成者ID|createUserId|int|||no|||
+|10|更新日時|updateDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
+|11|更新者ID|updateUserId|int|||no|||
+|12|バージョンNo|versionNo|int|||no|1||
+
+#### c. 言語（m_language）
+
+|No|列名称|物理名|型|size|PK|null|default|説明|
+|:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
+|1|ID|id|bigint||1|||自動付番|
+|2|言語名|name|varchar|64||no|||
+|3|国名|country|varchar|64||no|||
+|4|説明|remarks|varchar|64|||||
+|5|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
+|6|作成者ID|createUserId|int|||no|||
+|7|更新日時|updateDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
+|8|更新者ID|updateUserId|int|||no|||
+|9|バージョンNo|versionNo|int|||no|1||
+
+#### d. ロールグループ名（m_rollGroup）
+
+|No|列名称|物理名|型|size|PK|null|default|説明|
+|:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
+|1|ID|id|bigint||1||||
+|2|グループ名|name|varchar|64||no|||
+|3|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
+|4|作成者ID|createUserId|int|||no|||
+|5|更新日時|updateDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
+|6|更新者ID|updateUserId|int|||no|||
+|7|バージョンNo|versionNo|int|||no|1||
+
+#### e. ロール項目名（m_rollItem）
+
+|No|列名称|物理名|型|size|PK|null|default|説明|
+|:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
+|1|ID|id|bigint||1||||
+|2|ロール名|name|varchar|64||no|||
+|3|ロールグループID|group_id|bigint|||no|||
+|4|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
+|5|作成者ID|createUserId|int|||no|||
+|6|更新日時|updateDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
+|7|更新者ID|updateUserId|int|||no|||
+|8|バージョンNo|versionNo|int|||no|1||
 
 ##### (2) トランザクション系
 #### a. セッション（t_session）
-工事中
+
+|No|列名称|物理名|型|size|PK|null|default|説明|
+|:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
+|1|セッションID|session_id|varchar|64|1||||
+|2|ユーザID|user_id|int||||||
+|3|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
+|4|作成者ID|createUserId|int|||no|||
+|5|更新日時|updateDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
+|6|更新者ID|updateUserId|int|||no|||
+|7|バージョンNo|versionNo|int|||no|1||
+
 #### b. ロール名（t_roll_name）
-工事中
+
+|No|列名称|物理名|型|size|PK|null|default|説明|
+|:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
+|1|ID|id|bigint||1||||
+|2|名称|name|varchar|256||no|||
+|3|説明|description|varchar|1024|||||
+|4|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
+|5|作成者ID|createUserId|int|||no|||
+|6|更新日時|updateDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
+|7|更新者ID|updateUserId|int|||no|||
+|8|バージョンNo|versionNo|int|||no|1||
+
 #### c. ロール許可（t_roll_setting）
-工事中
+
+|No|列名称|物理名|型|size|PK|null|default|説明|
+|:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
+|1|名称ID|roll_name_id|bigint||1||||
+|2|項目ID|roll_item_id|bigint||2||||
+|3|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
+|4|作成者ID|createUserId|int|||no|||
+|5|更新日時|updateDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
+|6|更新者ID|updateUserId|int|||no|||
+|7|バージョンNo|versionNo|int|||no|1||
+
 #### d. チケット（t_ticket）
 
 |No|列名称|物理名|型|size|PK|null|default|説明|

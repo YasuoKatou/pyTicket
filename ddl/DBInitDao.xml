@@ -61,7 +61,7 @@
 
 	<insert id="createRollGroupMaster">
 		create table m_rollGroup (
-			  id bigint	primary key				--識別子（自動付番）
+			  id bigint	primary key				--識別子
 			, name varchar(64) not null			--ロールグループ名
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
 			, createUserId int not null									--作成者ID
@@ -76,7 +76,7 @@
 
 	<insert id="createRollItemMaster">
 		create table m_rollItem (
-			  id bigint	primary key				--識別子（自動付番）
+			  id bigint	primary key				--識別子
 			, name varchar(64) not null			--ロール名
 			, group_id bigint not null			--ロールグループ識別子
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
