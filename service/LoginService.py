@@ -28,9 +28,10 @@ class LoginService(BaseService):
     @DBA.Transactional
     def doLogin(self, request, *args, **kwargs):
         _Log.debug('login service start')
-        sid = request['session_id']
-        login_id = request['login_id']
-        passwd   = request['passwd']
+        sid = request['header']['session_id']
+        request_body = request['body']
+        login_id = request_body['login_id']
+        passwd   = request_body['passwd']
         cursor = kwargs['cursor']
         #-------------------------------
         #ログイン用セッションIDを取得
@@ -38,6 +39,7 @@ class LoginService(BaseService):
         ts = sessionDao.findByPk(cursor, {'session_id': sid})
         if ts is None:
             #ログイン用セッションIDが取得できなかった場合
+            _Log.error('no temp session id : ' + sid)
             raise Exception('no temp session id')
         _Log.debug('temp session id : ' + ts['session_id'])
         if ts['session_id'] != sid:
@@ -60,6 +62,7 @@ class LoginService(BaseService):
         um = userMasterDao.findByLoginId(cursor, {'login_id': dec_login_id})
         if um is None:
             #ユーザマスタが取得できなかった場合
+            _Log.error('no user master : ' + dec_login_id)
             raise Exception('no user master')
         if um['passwd'] != dec_passwd:
             #パスワードが不一致の場合
