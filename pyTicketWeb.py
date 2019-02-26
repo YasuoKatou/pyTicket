@@ -4,7 +4,7 @@ sys.dont_write_bytecode = True
 
 import json
 import logging
-from bottle import post, request, run, HTTPResponse
+from bottle import post, request, response, run, HTTPResponse, hook, route
 
 from dao.ticket_dao_manager import TicketDaoManager
 
@@ -78,6 +78,18 @@ def edit_response(body):
     r.set_header('Content-Type', 'application/json')
     return r
 
+@hook('after_request')
+def enable_cors():
+	if not 'Origin' in request.headers.keys():
+		return
+	response.headers['Access-Control-Allow-Origin']  = request.headers['Origin']
+	#response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
+	response.headers['Access-Control-Allow-Methods'] = 'POST'
+	response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token, Authorization'
+
+@route('<any:path>', method='OPTIONS')
+def response_for_options(**kwargs):
+	return {}
 
 @post('/login')
 @post('/login/prepare')
