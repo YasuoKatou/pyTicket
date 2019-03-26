@@ -1,7 +1,8 @@
 # -*- coding:utf-8 -*-
 import xml.etree.ElementTree as ET
-import psycopg2
+#import psycopg2
 import json
+import re
 from logging import getLogger, DEBUG
 
 import util.DBAccess as DBA
@@ -10,7 +11,25 @@ from dao.ticket_dao_manager import TicketDaoManager
 
 _Log = getLogger(__name__)
 
+# drop table {テーブル名} からテーブル名を抽出する正規表現
+_re_01 = re.compile(r'\s*drop\s+table\s+(?P<name>\S+)', re.IGNORECASE)
+_find_table = 'select case count(1) when 1 then TRUE else FALSE end ' \
+              'from pg_stat_user_tables where lower(relname) = lower(%s)'
+
+def _hasTable(cur, ddl):
+    # todo DDL('drop table m_user')からテーブル名を取り出す
+    m = _re_01.search(ddl)
+    tblName = m.group('name')
+    cur.execute(_find_table, (tblName,))
+    (found,) = cur.fetchone()
+    if not found:
+        _Log.debug("'" + tblName + "' not found" )
+
+    return True if found else False
+
 def _dropTable(cur, ddl):
+    if not _hasTable(cur, ddl):
+        return
     try:
         cur.execute(ddl)
     except Exception as ex:
