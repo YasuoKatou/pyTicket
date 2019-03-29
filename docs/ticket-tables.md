@@ -41,10 +41,10 @@
 
 |No|列名称|物理名|型|size|PK|null|default|説明|
 |:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
-|1|ID|id|bigint||1|||自動付番|
+|1|ID|id|int||1|||自動付番|
 |2|名称|name|varchar|256|||||
 |3|説明|description|varchar|1024|||||
-|4|管理者ID|manager_id|bigint|||no|||
+|4|管理者ID|manager_id|int|||no|||
 |5|進行中|alive|varchar|10||no|'yes'||
 |6|第三者に公開|opened|varchar|10||no|'no'||
 |7|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
@@ -60,13 +60,13 @@
 
 |No|列名称|物理名|型|size|PK|null|default|説明|
 |:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
-|1|ID|id|bigint||1||||
+|1|ID|id|int||1||||
 |2|ログインID|login_id|varchar|256||||unique|
 |3|パスワード|passwd|varchar|256||no||暗号化|
 |4|性|name1|varchar|256||no|||
 |5|名|name2|varchar|256||no|||
 |6|メルアド|email|varchar|256||no|||
-|7|言語ID|language_id|bigint|||no|||
+|7|言語ID|language_id|int|||no|||
 |8|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
 |9|作成者ID|createUserId|int|||no|||
 |10|更新日時|updateDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
@@ -80,7 +80,7 @@
 
 |No|列名称|物理名|型|size|PK|null|default|説明|
 |:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
-|1|ID|id|bigint||1|||自動付番|
+|1|ID|id|int||1|||自動付番|
 |2|言語名|name|varchar|64||no|||
 |3|国名|country|varchar|64||no|||
 |4|説明|remarks|varchar|64|||||
@@ -97,7 +97,7 @@
 
 |No|列名称|物理名|型|size|PK|null|default|説明|
 |:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
-|1|ID|id|bigint||1||||
+|1|ID|id|int||1||||
 |2|グループ名|name|varchar|64||no|||
 |3|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
 |4|作成者ID|createUserId|int|||no|||
@@ -112,9 +112,9 @@
 
 |No|列名称|物理名|型|size|PK|null|default|説明|
 |:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
-|1|ID|id|bigint||1||||
+|1|ID|id|int||1||||
 |2|ロール名|name|varchar|64||no|||
-|3|ロールグループID|group_id|bigint|||no|||
+|3|ロールグループID|group_id|int|||no|||
 |4|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
 |5|作成者ID|createUserId|int|||no|||
 |6|更新日時|updateDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
@@ -145,7 +145,7 @@
 
 |No|列名称|物理名|型|size|PK|null|default|説明|
 |:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
-|1|ID|id|bigint||1||||
+|1|ID|id|int||1||||
 |2|名称|name|varchar|256||no|||
 |3|説明|description|varchar|1024|||||
 |4|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
@@ -161,8 +161,8 @@
 
 |No|列名称|物理名|型|size|PK|null|default|説明|
 |:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
-|1|名称ID|roll_name_id|bigint||1||||
-|2|項目ID|roll_item_id|bigint||2||||
+|1|名称ID|roll_name_id|int||1||||
+|2|項目ID|roll_item_id|int||2||||
 |3|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
 |4|作成者ID|createUserId|int|||no|||
 |5|更新日時|updateDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
@@ -176,16 +176,16 @@
 
 |No|列名称|物理名|型|size|PK|null|default|説明|
 |:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
-|1|チケットID|id|bigint||1||||
+|1|チケットID|id|int||1||||
 |2|チケットタイトル|title|varchar|256||no|||
 |3|説明|description|varchar|1024|||||
-|4|ステータスID|status_id|bigint||||||
-|5|種類ID|kind_id|bigint||||||
-|6|優先順位ID|priority_id|bigint||||||
+|4|ステータスID|status_id|int||||||
+|5|種類ID|kind_id|int||||||
+|6|優先順位ID|priority_id|int||||||
 |7|開始日|start_date|DATE||||||
 |8|終了日|finish_date|DATE||||||
-|9|チケットの進捗|progress_id|bigint||||||
-|10|プロジェクトID|project_id|bigint||||||
+|9|チケットの進捗|progress_id|int||||||
+|10|プロジェクトID|project_id|int||||||
 |11|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
 |12|作成者ID|createUserId|int|||no|||
 |13|更新日時|updateDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
@@ -199,11 +199,11 @@
 
 |No|列名称|物理名|型|size|PK|null|default|説明|
 |:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
-|1|メモID|id|bigint||2||||
-|2|チケットID|ticket_id|bigint||1||||
+|1|メモID|id|int||2||||
+|2|チケットID|ticket_id|int||1||||
 |3|説明|memo|varchar|1024||no|||
-|4|ルートメモID|root_memo_id|bigint|||no||
-|5|親メモID|parent_memo_id|bigint|||no||
+|4|ルートメモID|root_memo_id|int|||no||
+|5|親メモID|parent_memo_id|int|||no||
 |6|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
 |7|作成者ID|createUserId|int|||no|||
 |8|更新日時|updateDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
@@ -217,8 +217,8 @@
 
 |No|列名称|物理名|型|size|PK|null|default|説明|
 |:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
-|1|プロジェクトID|project_id|bigint||1||||
-|2|状態ID|id|bigint||2||||
+|1|プロジェクトID|project_id|int||1||||
+|2|状態ID|id|int||2||||
 |3|表示順|disp_seq|int||||||
 |4|状態名称|name|varchar|256||no|||
 |5|有効フラグ|available|varchar|10||no|||
@@ -235,8 +235,8 @@
 
 |No|列名称|物理名|型|size|PK|null|default|説明|
 |:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
-|1|プロジェクトID|project_id|bigint||1||||
-|2|状態ID|id|bigint||2||||
+|1|プロジェクトID|project_id|int||1||||
+|2|状態ID|id|int||2||||
 |3|表示順|disp_seq|int||||||
 |4|状態名称|name|varchar|256||no|||
 |5|有効フラグ|available|varchar|10||no|||
@@ -253,8 +253,8 @@
 
 |No|列名称|物理名|型|size|PK|null|default|説明|
 |:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
-|1|プロジェクトID|project_id|bigint||1||||
-|2|進捗ID|id|bigint||2||||
+|1|プロジェクトID|project_id|int||1||||
+|2|進捗ID|id|int||2||||
 |3|表示順|disp_seq|int||||||
 |4|進捗名称|name|varchar|256||no|||
 |5|有効フラグ|available|varchar|10||no|||
@@ -271,8 +271,8 @@
 
 |No|列名称|物理名|型|size|PK|null|default|説明|
 |:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
-|1|プロジェクトID|project_id|bigint||1||||
-|2|種類ID|id|bigint||2||||
+|1|プロジェクトID|project_id|int||1||||
+|2|種類ID|id|int||2||||
 |3|表示順|disp_seq|int||||||
 |4|種類名称|name|varchar|256||no|||
 |5|有効フラグ|available|varchar|10||no|||
@@ -289,8 +289,8 @@
 
 |No|列名称|物理名|型|size|PK|null|default|説明|
 |:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
-|1|プロジェクトID|project_id|bigint||1||||
-|2|優先順位ID|id|bigint||2||||
+|1|プロジェクトID|project_id|int||1||||
+|2|優先順位ID|id|int||2||||
 |3|表示順|disp_seq|int||||||
 |4|優先順位名称|name|varchar|256||no|||
 |5|有効フラグ|available|varchar|10||no|||
@@ -310,16 +310,16 @@
 
 |No|列名称|物理名|型|size|PK|null|default|説明|
 |:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
-|1|チケットID|id|bigint||1||||
+|1|チケットID|id|int||1||||
 |2|チケットタイトル|title|varchar|256||no|||
 |3|説明|description|varchar|1024|||||
-|4|ステータスID|status_id|bigint||||||
-|5|種類ID|kind_id|bigint||||||
-|6|優先順位ID|priority_id|bigint||||||
+|4|ステータスID|status_id|int||||||
+|5|種類ID|kind_id|int||||||
+|6|優先順位ID|priority_id|int||||||
 |7|開始日|start_date|DATE||||||
 |8|終了日|finish_date|DATE||||||
-|9|チケットの進捗|progress_id|bigint||||||
-|10|プロジェクトID|project_id|bigint||||||
+|9|チケットの進捗|progress_id|int||||||
+|10|プロジェクトID|project_id|int||||||
 |11|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
 |12|作成者ID|createUserId|int|||no|||
 |13|更新日時|updateDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
@@ -333,11 +333,11 @@
 
 |No|列名称|物理名|型|size|PK|null|default|説明|
 |:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
-|1|メモID|id|bigint||1||||
-|2|チケットID|ticket_id|bigint||2||||
+|1|メモID|id|int||1||||
+|2|チケットID|ticket_id|int||2||||
 |3|説明|memo|varchar|1024||no|||
-|4|ルートメモID|root_memo_id|bigint|||no|||
-|5|親メモID|parent_memo_id|bigint|||no|||
+|4|ルートメモID|root_memo_id|int|||no|||
+|5|親メモID|parent_memo_id|int|||no|||
 |6|作成日時|createDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||
 |7|作成者ID|createUserId|int|||no|||
 |8|更新日時|updateDate|TIMESTAMP|||no|CURRENT_TIMESTAMP||

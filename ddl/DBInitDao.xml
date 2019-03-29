@@ -5,10 +5,10 @@
 <mapper namespace="yks.ticket.lite.dao.DBInitDao">
 	<insert id="createProjectMaster">
 		create table m_project (
-			  id bigint primary key				--識別子（自動付番）
-			, name varchar(256) not null		--プロジェクト名称
-			, description varchar(1024)			--プロジェクトの説明
-			, manager_id bigint not null		--プロジェクト管理者
+			  id int primary key					--識別子（自動付番）
+			, name varchar(256) not null			--プロジェクト名称
+			, description varchar(1024)				--プロジェクトの説明
+			, manager_id int not null				--プロジェクト管理者ID
 			, alive varchar(10) not null default 'yes'	--プロジェクト進行中
 			, opened varchar(10) not null default 'no'	--第三者に公開
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
@@ -24,13 +24,13 @@
 
 	<insert id="createUserMaster">
 		create table m_user (
-			  id int primary key				--ユーザ識別子
-			, login_id varchar(256) unique		--ログインID
-			, passwd varchar(256) not null		--パスワード（暗号化）
-			, name1 varchar(256) not null		--性
-			, name2 varchar(256) not null		--名
-			, email varchar(256) not null		--メールアドレス
-			, language_id bigint not null		--言語ID
+			  id int primary key					--ユーザ識別子
+			, login_id varchar(256) unique			--ログインID
+			, passwd varchar(256) not null			--パスワード（暗号化）
+			, name1 varchar(256) not null			--性
+			, name2 varchar(256) not null			--名
+			, email varchar(256) not null			--メールアドレス
+			, language_id int not null				--言語ID
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
 			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
@@ -44,10 +44,10 @@
 
 	<insert id="createLanguageMaster">
 		create table m_language (
-			  id bigint	primary key				--識別子（自動付番）
-			, name varchar(64) not null			--言語名
-			, country varchar(64) not null		--国名
-			, remarks varchar(64)				--説明
+			  id int primary key					--識別子（自動付番）
+			, name varchar(64) not null				--言語名
+			, country varchar(64) not null			--国名
+			, remarks varchar(64)					--説明
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
 			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
@@ -61,8 +61,8 @@
 
 	<insert id="createRollGroupMaster">
 		create table m_rollGroup (
-			  id bigint	primary key				--識別子
-			, name varchar(64) not null			--ロールグループ名
+			  id int	primary key					--識別子
+			, name varchar(64) not null				--ロールグループ名
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
 			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
@@ -76,9 +76,9 @@
 
 	<insert id="createRollItemMaster">
 		create table m_rollItem (
-			  id bigint	primary key				--識別子
-			, name varchar(64) not null			--ロール名
-			, group_id bigint not null			--ロールグループ識別子
+			  id int	primary key					--識別子
+			, name varchar(64) not null				--ロール名
+			, group_id int not null					--ロールグループ識別子
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
 			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
@@ -107,7 +107,7 @@
 
 	<insert id="createRollNameTran">
 		create table t_roll_name (
-			  id bigint primary key					--ロール名称ID
+			  id int primary key					--ロール名称ID
 			, name varchar(256) not null			--ロール名称
 			, description varchar(1024)				--説明
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
@@ -123,8 +123,8 @@
 
 	<insert id="createRollSettingTran">
 		create table t_roll_setting (
-			  roll_name_id bigint 					--ロール名称ID
-			, roll_item_id bigint 					--ロール項目ID
+			  roll_name_id int 						--ロール名称ID
+			, roll_item_id int 						--ロール項目ID
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
 			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
@@ -139,16 +139,16 @@
 
 	<insert id="createTicketTran">
 		create table t_ticket (
-			  id bigint primary key					--チケットID
+			  id int primary key					--チケットID
 			, title varchar(256) not null			--チケットタイトル
 			, description varchar(1024)				--チケットの説明
-			, status_id bigint						--チケットステータスID
-			, kind_id bigint						--種類ID
-			, priority_id bigint					--優先順位ID
+			, status_id int							--チケットステータスID
+			, kind_id int							--種類ID
+			, priority_id int						--優先順位ID
 			, start_date DATE						--開始日
 			, finish_date DATE						--終了日
-			, progress_id bigint					--チケットの進捗
-			, project_id bigint						--プロジェクトID
+			, progress_id int						--チケットの進捗
+			, project_id int						--プロジェクトID
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
 			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
@@ -162,11 +162,11 @@
 
 	<insert id="createTicketMemoTran">
 		create table t_ticket_memo (
-			  id bigint 							--メモID
-			, ticket_id bigint						--チケットID
+			  id int 								--メモID
+			, ticket_id int							--チケットID
 			, memo varchar(1024) not null			--メモ内容
-			, root_memo_id bigint not null			--ルートメモID
-			, parent_memo_id bigint not null		--親メモID
+			, root_memo_id int not null				--ルートメモID
+			, parent_memo_id int not null			--親メモID
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
 			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
@@ -181,16 +181,16 @@
 
 	<insert id="createTicketHistory">
 		create table h_ticket (
-			  id bigint								--チケットID
+			  id int								--チケットID
 			, title varchar(256) not null			--チケットタイトル
 			, description varchar(1024)				--チケットの説明
-			, status_id bigint						--チケットステータスID
-			, kind_id bigint						--種類ID
-			, priority_id bigint					--優先順位ID
+			, status_id int							--チケットステータスID
+			, kind_id int							--種類ID
+			, priority_id int						--優先順位ID
 			, start_date DATE						--開始日
 			, finish_date DATE						--終了日
-			, progress_id bigint					--チケットの進捗
-			, project_id bigint						--プロジェクトID
+			, progress_id int						--チケットの進捗
+			, project_id int						--プロジェクトID
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
 			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
@@ -205,11 +205,11 @@
 
 	<insert id="createTicketMemoHistory">
 		create table h_ticket_memo (
-			  id bigint 							--メモID
-			, ticket_id bigint						--チケットID
+			  id int 								--メモID
+			, ticket_id int							--チケットID
 			, memo varchar(1024) not null			--説明
-			, root_memo_id bigint not null			--ルートメモID
-			, parent_memo_id bigint not null		--親メモID
+			, root_memo_id int not null				--ルートメモID
+			, parent_memo_id int not null			--親メモID
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
 			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時
@@ -224,8 +224,8 @@
 
 	<insert id="createProjectStatusTran">
 		create table t_proj_stat (
-			  project_id bigint						--プロジェクトID
-			, id bigint								--識別子
+			  project_id int						--プロジェクトID
+			, id int								--識別子
 			, disp_seq int							--表示順
 			, name varchar(256) not null			--ステータス名称
 			, available varchar(10) not null		--有効フラグ
@@ -243,8 +243,8 @@
 
 	<insert id="createTicketStatusTran">
 		create table t_ticket_stat (
-			  project_id bigint						--プロジェクトID
-			, id bigint								--識別子
+			  project_id int						--プロジェクトID
+			, id int								--識別子
 			, disp_seq int							--表示順
 			, name varchar(256) not null			--ステータス名称
 			, available varchar(10) not null		--有効フラグ
@@ -262,8 +262,8 @@
 
 	<insert id="createTicketProgressTran">
 		create table t_ticket_progress (
-			  project_id bigint						--プロジェクトID
-			, id bigint								--識別子
+			  project_id int						--プロジェクトID
+			, id int								--識別子
 			, disp_seq int							--表示順
 			, name varchar(256) not null			--進捗名称
 			, available varchar(10) not null		--有効フラグ
@@ -281,8 +281,8 @@
 
 	<insert id="createTicketKindTran">
 		create table t_ticket_kind (
-			  project_id bigint						--プロジェクトID
-			, id bigint								--識別子
+			  project_id int						--プロジェクトID
+			, id int								--識別子
 			, disp_seq int							--表示順
 			, name varchar(256) not null			--種類名称
 			, available varchar(10) not null		--有効フラグ
@@ -300,8 +300,8 @@
 
 	<insert id="createTicketPriorityTran">
 		create table t_ticket_priority (
-			  project_id bigint						--プロジェクトID
-			, id bigint								--識別子
+			  project_id int						--プロジェクトID
+			, id int								--識別子
 			, disp_seq int							--表示順
 			, name varchar(256) not null			--優先順位名称
 			, available varchar(10) not null		--有効フラグ
