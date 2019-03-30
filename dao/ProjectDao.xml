@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yks.ticket.lite.dao.master.ProjectDao">
+  <resultMap id="projectResultMap" type="yks.ticket.lite.entity.master.ProjectEntity" autoMapping="true">
+  </resultMap>
+
+  <select id="findMaxId">
+    select max(id) maxId from m_project
+  </select>
+
+  <insert id="addProject">
+    insert into m_project (
+			  id            --識別子（自動付番）
+			, name          --プロジェクト名称
+			, description   --プロジェクトの説明
+			, manager_id    --プロジェクト管理者ID
+			, alive         --プロジェクト進行中
+			, opened        --第三者に公開
+	    , createUserId  --作成者ID
+	    , updateUserId  --更新者ID
+    ) values (
+			  #{id}            --識別子（自動付番）
+			, #{name}          --プロジェクト名称
+			, #{description}   --プロジェクトの説明
+			, #{manager_id}    --プロジェクト管理者ID
+			, #{alive}         --プロジェクト進行中
+			, #{opened}        --第三者に公開
+	    , #{createUserId}  --作成者ID
+	    , #{createUserId}  --更新者ID
+    )
+  </insert>
+
+  <select id="findByProjectId">
+    select
+			  id            --識別子（自動付番）
+			, name          --プロジェクト名称
+			, description   --プロジェクトの説明
+			, manager_id    --プロジェクト管理者ID
+			, alive         --プロジェクト進行中
+			, opened        --第三者に公開
+	    , createUserId  --作成者ID
+	    , updateUserId  --更新者ID
+    from m_project
+    where id = #{id}
+  </select>
+
+  <update id="updateProject">
+    update m_project set
+			  id = #{id}                      --識別子
+			, name = #{name}                  --プロジェクト名称
+			, description = #{description}    --プロジェクトの説明
+			, manager_id = #{manager_id}      --プロジェクト管理者ID
+			, alive = #{alive}                --プロジェクト進行中
+			, opened = #{opened}              --第三者に公開
+      , updateDate = CURRENT_TIMESTAMP  --更新日時
+      , updateUserId = #{updateUserId}  --更新者ID
+      , versionNo = versionNo + 1       --バージョンNo
+    where id = #{id}
+  </update>
+</mapper>

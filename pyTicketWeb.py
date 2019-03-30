@@ -101,14 +101,15 @@ def login_out():
     result = getattr(c, m)(request)
     return edit_response(json.dumps(result))
 
-#サービスの一覧を作成
-svc_map = make_service_map()
+if __name__ == '__main__':
+    #サービスの一覧を作成
+    svc_map = make_service_map()
 
-#コントローラの一覧を作成
-make_controller_map(svc_map)
+    #コントローラの一覧を作成
+    make_controller_map(svc_map)
 
-#開始
-#run(host='localhost', port=8080)
-run(host='0.0.0.0', port=8080)
+    #開始
+    #run(host='localhost', port=8080)
+    run(host='0.0.0.0', port=8080)
 
 #[EOF]
