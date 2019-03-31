@@ -27,7 +27,7 @@ class ProjectService(BaseService):
         # 最大のプロジェクトIDを取得
         dao = super().dao_manager.get_dao('projectDao')
         r = dao.findMaxId(cursor, {})
-        maxId = r['maxid'] if r['maxid'] is not None else 0
+        maxId = r['max_id'] if r['max_id'] is not None else 0
         _Log.debug('new project id : ' + str(maxId))
         # 新規プロジェクトの登録
         pinfo = request['body']
@@ -43,7 +43,28 @@ class ProjectService(BaseService):
         プロジェクトの更新を行う
         '''
         _Log.debug('update projet service start')
-        # TODO プロジェクトの更新
-        # TODO レスポンスの編集
+        cursor = kwargs['cursor']
+        # ログイン情報を取得
+        login = super().getLogin(cursor, request)
+        # プロジェクトの更新
+        pinfo = request['body']
+        pinfo['updateUserId'] = login['id']
+        dao = super().dao_manager.get_dao('projectDao')
+        dao.updateProject(cursor, pinfo)
+        # レスポンスの編集
+        return {'status': 'OK'}
+
+    @DBA.Transactional
+    def findProject(self, request, *args, **kwargs):
+        '''
+        プロジェクトの検索を行う
+        '''
+        _Log.debug('find projet service start')
+        cursor = kwargs['cursor']
+        # プロジェクトの検索
+        dao = super().dao_manager.get_dao('projectDao')
+        r = dao.findByProjectId(cursor, request['body'])
+        # レスポンスの編集
+        return {'status': 'OK', 'project': r}
 
 #[EOF]

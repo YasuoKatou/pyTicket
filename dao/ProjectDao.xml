@@ -7,7 +7,7 @@
   </resultMap>
 
   <select id="findMaxId">
-    select max(id) maxId from m_project
+    select max(id) max_id from m_project
   </select>
 
   <insert id="addProject">
@@ -42,6 +42,7 @@
 			, opened        --第三者に公開
 	    , createUserId  --作成者ID
 	    , updateUserId  --更新者ID
+      , versionNo version_no     --バージョンNo
     from m_project
     where id = #{id}
   </select>
