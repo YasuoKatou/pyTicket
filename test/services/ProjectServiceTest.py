@@ -12,11 +12,11 @@ from pyTicketWeb import make_service_map
 class ProjectServiceTest(unittest.TestCase):
     def setUp(self):
         print('start setUp')
-        # if not hasattr(self, 'ticket_service_map'):
-        #     self.ticket_service_map = make_service_map()
-        #     print('init service map')
+        if not hasattr(self, 'ticket_service_map'):
+            self.ticket_service_map = make_service_map()
+            print('init service map')
 
-    def test_newProjet():
+    def test_newProjet(self):
         '''
         新規プロジェクトの登録を確認する
         '''
@@ -31,8 +31,8 @@ class ProjectServiceTest(unittest.TestCase):
         self.assertIsNotNone(ret)               # return is Not None
         self.assertIsInstance(ret, dict)        # return is dictionally
         self.assertEqual('OK', ret['status'])   # 'status' = 'OK'
-        self.assertIsNotNone('OK', ret['id'])   # has 'id'
-        print('project id : ' + ret['id'])
+        self.assertIsNotNone(ret['id'])         # has 'id'
+        print('project id : ' + str(ret['id']))
 
 if __name__ == '__main__':
     unittest.main()

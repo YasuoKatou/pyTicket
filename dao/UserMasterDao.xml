@@ -31,6 +31,27 @@
     )
   </insert>
 
+  <select id="findById" resultMap="userMasterResultMap">
+    select
+        T1.id       --ユーザ識別子
+      , T1.login_id --ログインID
+      , T1.passwd   --パスワード
+      , T1.name1    --性
+      , T1.name2    --名
+      , T1.email    --メールアドレス
+      , T1.language_id  --言語ID
+      , T1.createUserId  --作成者ID
+      , T1.updateDate    --更新日時
+      , T1.updateUserId  --更新者ID
+      , T1.versionNo     --バージョンNo
+      , M1.name lang_name        --言語名
+      , M1.country lang_country  --国名
+    from m_user T1
+    inner join m_language M1
+       on T1.language_id = M1.id
+    where T1.id = #{id}
+  </select>
+
   <select id="findByLoginId" resultMap="userMasterResultMap">
     select
         T1.id       --ユーザ識別子
@@ -85,4 +106,27 @@
       , versionNo  = versionNo + 1
     where login_id = #{login_id}
   </update>
+
+  <select id="findBySessionId">
+    select
+        T1.id       --ユーザ識別子
+      , T1.login_id --ログインID
+      , T1.passwd   --パスワード
+      , T1.name1    --性
+      , T1.name2    --名
+      , T1.email    --メールアドレス
+      , T1.language_id  --言語ID
+      , T1.createUserId  --作成者ID
+      , T1.updateDate    --更新日時
+      , T1.updateUserId  --更新者ID
+      , T1.versionNo     --バージョンNo
+      , M1.name lang_name        --言語名
+      , M1.country lang_country  --国名
+    from m_user T1
+    inner join m_language M1
+       on T1.language_id = M1.id
+    inner join t_session T2
+       on T2.user_id = T1.id
+      and T2.session_id = #{session_id}
+  </select>
 </mapper>

@@ -7,30 +7,63 @@ from logging import getLogger, DEBUG
 
 import util.DBAccess as DBA
 from dao.ticket_dao_manager import TicketDaoManager
-#from config.db_config import DBConfig
+import config.db_config as DBC
 
 _Log = getLogger(__name__)
 
 # drop table {テーブル名} からテーブル名を抽出する正規表現
 _re_01 = re.compile(r'\s*drop\s+table\s+(?P<name>\S+)', re.IGNORECASE)
-_find_table = 'select case count(1) when 1 then TRUE else FALSE end ' \
-              'from pg_stat_user_tables where lower(relname) = lower(%s)'
+# テーブルの存在を確認するクエリー（PostgreSQL）
+_find_table_pg = "select case count(1) when 1 then TRUE else FALSE end " \
+                 "from pg_stat_user_tables where lower(relname) = %s"
+# テーブルの存在を確認するクエリー（SQLite）
+_find_table_sl = "select case count(1) when 1 then 1 else 0 end " \
+                 "from sqlite_master where type = 'table' and lower(name) = ?"
 
-def _hasTable(cur, ddl):
-    # todo DDL('drop table m_user')からテーブル名を取り出す
+def _hasTable_pg(cur, ddl):
+    '''
+    テーブルの存在を確認する（PostgreSQL）
+    '''
+    # DDL('drop table m_user')からテーブル名を取り出す
     m = _re_01.search(ddl)
     tblName = m.group('name')
-    cur.execute(_find_table, (tblName,))
+    # DBの管理情報でテーブルの存在を確認
+    cur.execute(_find_table_pg, (tblName.lower(),))
     (found,) = cur.fetchone()
     if not found:
-        _Log.debug("'" + tblName + "' not found" )
-
+        _Log.debug("'" + tblName + "' not found (PostgreSQL)" )
     return True if found else False
 
+def _hasTable_sl(cur, ddl):
+    '''
+    テーブルの存在を確認する（SQLite）
+    '''
+    # DDL('drop table m_user')からテーブル名を取り出す
+    m = _re_01.search(ddl)
+    tblName = m.group('name')
+    # DBの管理情報でテーブルの存在を確認
+    cur.execute(_find_table_sl, (tblName.lower(),))
+    (found,) = cur.fetchone()
+    if not found:
+        _Log.debug("'" + tblName + "' not found (SQLite)" )
+    return True if found else False
+
+def _hasTable(cur, ddl):
+    '''
+    テーブルの存在を確認する
+    '''
+    dbType = DBC.DBConfig.getDBType()
+    if dbType == DBC.DBType_PostgreSQL:
+        return _hasTable_pg(cur, ddl)
+    elif dbType == DBC.DBType_SQLite:
+        return _hasTable_sl(cur, ddl)
+    else:
+        raise Exception('DB type error (' + dbType + ')')
+
 def _dropTable(cur, ddl):
-    if not _hasTable(cur, ddl):
-        return
     try:
+        if not _hasTable(cur, ddl):
+            return
         cur.execute(ddl)
     except Exception as ex:
         _Log.debug(ex)
