@@ -60,4 +60,12 @@
       , versionNo = versionNo + 1       --バージョンNo
     where id = #{id}
   </update>
+
+  <select id="projectList">
+    select
+			  id            --識別子（自動付番）
+			, name          --プロジェクト名称
+    from m_project
+		order by name
+	</select>
 </mapper>

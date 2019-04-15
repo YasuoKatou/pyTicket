@@ -67,4 +67,17 @@ class ProjectService(BaseService):
         # レスポンスの編集
         return {'status': 'OK', 'project': r}
 
+    @DBA.Transactional
+    def projectList(self, *args, **kwargs):
+        '''
+        プロジェクトの一覧を取得する
+        '''
+        _Log.debug('projet list service start')
+        cursor = kwargs['cursor']
+        # 一覧を取得
+        dao = super().dao_manager.get_dao('projectDao')
+        r = dao.projectList(cursor)
+        # レスポンスの編集
+        return {'status': 'OK', 'list': r}
+
 #[EOF]

@@ -94,6 +94,9 @@ def response_for_options(**kwargs):
 @post('/login')
 @post('/login/prepare')
 @post('/logout')
+@post('/new_project')
+@post('/edit_project')
+@post('/project_list')
 def login_out():
     '''
     '''
