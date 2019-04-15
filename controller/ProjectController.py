@@ -23,13 +23,28 @@ class ProjectController(BaseController):
         super().__init__('project', mapping)
 
     def newProject(self, request):
-        pass
+        '''
+        プロジェクトの新規登録
+        '''
+        # プロジェクトサービスを取得
+        svc = super().get_service('project')
+        # プロジェクトを登録し、登録結果をクライアントに返信する
+        return svc.newProjet(request)
 
     def editProject(self, request):
-        pass
+        '''
+        プロジェクトの更新
+        '''
+        # プロジェクトサービスを取得
+        svc = super().get_service('project')
+        # プロジェクトを更新し、更新結果をクライアントに返信する
+        return svc.updateProjet(request)
 
     def projectList(self, request):
-        # ログインサービスを取得
+        '''
+        プロジェクト一覧の取得
+        '''
+        # プロジェクトサービスを取得
         svc = super().get_service('project')
         # 一覧取得サービスを呼び出し、クライアントに返信する
         return svc.projectList()

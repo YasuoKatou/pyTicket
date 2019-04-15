@@ -63,9 +63,13 @@
 
   <select id="projectList">
     select
-			  id            --識別子（自動付番）
-			, name          --プロジェクト名称
-    from m_project
-		order by name
+			  PM.id          --識別子（自動付番）
+			, PM.name pname  --プロジェクト名称
+			, T1.name kname  --チケット種類名称
+		left outer join t_ticket_kind T1
+		     on T1.project_id = PM.id
+				and T1.available = 'yes'
+    from m_project PM
+		order by PM.name, T1.disp_seq
 	</select>
 </mapper>

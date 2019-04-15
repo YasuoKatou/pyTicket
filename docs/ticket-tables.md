@@ -42,7 +42,7 @@
 |No|列名称|物理名|型|size|PK|null|default|説明|
 |:-:|:--|:--|:-:|--:|:-:|:-:|:--|:--|
 |1|ID|id|int||1|||自動付番|
-|2|名称|name|varchar|256|||||
+|2|名称|name|varchar|256||||unique|
 |3|説明|description|varchar|1024|||||
 |4|管理者ID|manager_id|int|||no|||
 |5|進行中|alive|varchar|10||no|'yes'||
