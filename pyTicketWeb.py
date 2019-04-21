@@ -2,11 +2,14 @@
 import sys
 sys.dont_write_bytecode = True
 
+import argparse
 import json
 import logging
 from bottle import post, request, response, run, HTTPResponse, hook, route
 
 from dao.ticket_dao_manager import TicketDaoManager
+
+from config.db_config import DBConfig
 
 #Log level
 logging.basicConfig(level=logging.DEBUG)
@@ -106,6 +109,15 @@ def login_out():
     return edit_response(json.dumps(result))
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='pyTicket for Web')
+    parser.add_argument('--db_host', help='DB Server')
+    parser.add_argument('--db_port', help='DB Server port')
+    args = parser.parse_args()    # 引数を解析
+    if args.db_host:
+        DBConfig.setDBServer(args.db_host)
+    if args.db_port:
+        DBConfig.setDBServerPort(args.db_port)
+
     #サービスの一覧を作成
     svc_map = make_service_map()
 
