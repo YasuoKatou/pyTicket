@@ -9,8 +9,8 @@
 			, name varchar(256) unique				--プロジェクト名称
 			, description varchar(1024)				--プロジェクトの説明
 			, manager_id int not null				--プロジェクト管理者ID
-			, alive varchar(10) not null default 'yes'	--プロジェクト進行中
-			, opened varchar(10) not null default 'no'	--第三者に公開
+			, alive varchar(10) not null			--プロジェクト進行中
+			, opened varchar(10) not null			--第三者に公開
 			, createDate TIMESTAMP not null default CURRENT_TIMESTAMP	--作成日時
 			, createUserId int not null									--作成者ID
 			, updateDate TIMESTAMP not null default CURRENT_TIMESTAMP	--更新日時

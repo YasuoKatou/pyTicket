@@ -30,12 +30,12 @@ class ProjectService(BaseService):
         maxId = r['max_id'] if r['max_id'] is not None else 0
         _Log.debug('new project id : ' + str(maxId))
         # 新規プロジェクトの登録
-        pinfo = request['body']
+        pinfo = request.json['body']
         pinfo['id'] = maxId + 1
         pinfo['createUserId'] = login['id']
         dao.addProject(cursor, pinfo)
         # レスポンスの編集
-        return {'status': 'OK', 'id': pinfo['id']}
+        return {'status': 'OK'}
 
     @DBA.Transactional
     def updateProjet(self, request, *args, **kwargs):
@@ -47,7 +47,7 @@ class ProjectService(BaseService):
         # ログイン情報を取得
         login = super().getLogin(cursor, request)
         # プロジェクトの更新
-        pinfo = request['body']
+        pinfo = request.json['body']
         pinfo['updateUserId'] = login['id']
         dao = super().dao_manager.get_dao('projectDao')
         dao.updateProject(cursor, pinfo)
@@ -63,9 +63,11 @@ class ProjectService(BaseService):
         cursor = kwargs['cursor']
         # プロジェクトの検索
         dao = super().dao_manager.get_dao('projectDao')
-        r = dao.findByProjectId(cursor, request['body'])
+        p = {'id': int(request.json['body']['project_id'])}
+        r = dao.findByProjectId(cursor, p)
         # レスポンスの編集
-        return {'status': 'OK', 'project': r}
+        r['last_update'] = super().strftime(r['last_update'])
+        return r
 
     @DBA.Transactional
     def projectList(self, *args, **kwargs):
@@ -76,8 +78,7 @@ class ProjectService(BaseService):
         cursor = kwargs['cursor']
         # 一覧を取得
         dao = super().dao_manager.get_dao('projectDao')
-        r = dao.projectList(cursor)
-        # レスポンスの編集
-        return {'status': 'OK', 'list': r}
+        r = dao.projectList(cursor, {})     # TODO 空の引数を排除したい
+        return r if isinstance(r, list) else [r]
 
 #[EOF]

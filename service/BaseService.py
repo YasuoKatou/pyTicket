@@ -1,6 +1,8 @@
 # -*- coding:utf-8 -*-
 from logging import getLogger
 
+from config.ap_config import Products
+
 _Log = getLogger(__name__)
 
 class BaseService:
@@ -23,9 +25,15 @@ class BaseService:
     def dao_manager(self, dao_manager):
         self._dao_manager = dao_manager
 
+    def strftime(self, dt):
+        return dt.strftime('%Y-%m-%d %H:%M:%S')
+
     def getLogin(self, cur, request):
         if 'header' not in request:
-            raise Exception('no request header')
+            if Products:
+                raise Exception('no request header')
+            else:
+                return {'id': 1}
 
         dao = self.dao_manager.get_dao('userMasterDao')
         header = request['header']

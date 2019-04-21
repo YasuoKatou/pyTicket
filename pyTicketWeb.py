@@ -97,6 +97,7 @@ def response_for_options(**kwargs):
 @post('/new_project')
 @post('/edit_project')
 @post('/project_list')
+@post('/project_detail')
 def login_out():
     '''
     '''

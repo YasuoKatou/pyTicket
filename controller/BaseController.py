@@ -21,4 +21,20 @@ class BaseController:
             if map['url'] == path:
                 return map['method']
         return None
+    def _emptyResponse(self):
+        return {
+		    'header': None,
+		    'status': {'result': None},
+		    'body': None
+        }
+    def editOKResponse(self, data):
+        r = self._emptyResponse()
+        r['status']['result'] = 'OK'
+        r['body'] = data
+        return r
+    def editNGResponse(self, message):
+        r = self._emptyResponse()
+        r['status']['result'] = 'NG'
+        r['status']['message'] = message
+        return r
 #[EOF]
