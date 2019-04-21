@@ -83,6 +83,30 @@ class ProjectService(BaseService):
         r['last_update'] = super().strftime(r['last_update'])
         return r
 
+    def _editProjectList(self, recs):
+        '''
+        プロジェクト一覧を作成する
+        １プロジェクト、複数の種類で構成する
+        '''
+        r = []
+        for rec in recs:
+            t_rec = None
+            # プロジェクトIDを検索
+            for r_rec in r:
+                if r_rec['id'] == rec['id']:
+                    t_rec = r_rec
+                    break
+            if t_rec:
+                # 同じプロジェクトが存在する場合、種類情報を追加する
+                t_rec['kinds'].append({'id': rec['kid'], 'name': rec['kname']})
+            else:
+                # プロジェクトが見つからないとき
+                r.append({'id': rec['id'],
+                    'name': rec['name'],
+                    'kinds': [{'id': rec['kid'], 'name': rec['kname']}]
+                })
+        return r
+
     @DBA.Transactional
     def projectList(self, *args, **kwargs):
         '''
@@ -94,7 +118,10 @@ class ProjectService(BaseService):
         dao = super().dao_manager.get_dao('projectDao')
         r = dao.projectList(cursor, {})     # TODO 空の引数を排除したい
         if r:
-            return r if isinstance(r, list) else [r]
+            if isinstance(r, list):
+                return self._editProjectList(r)
+            else:
+                return [r]
         else:
             return None
 

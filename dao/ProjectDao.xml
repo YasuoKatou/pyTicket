@@ -63,9 +63,10 @@
   </update>
 
   <select id="projectList">
-    select
+		select
 			  PM.id						--識別子（自動付番）
 			, PM.name					--プロジェクト名称
+			, T1.id kid				--チケット種類ID
 			, T1.name kname		--チケット種類名称
     from m_project PM
 		left outer join t_ticket_kind T1
