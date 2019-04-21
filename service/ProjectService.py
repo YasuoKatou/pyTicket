@@ -30,10 +30,24 @@ class ProjectService(BaseService):
         maxId = r['max_id'] if r['max_id'] is not None else 0
         _Log.debug('new project id : ' + str(maxId))
         # 新規プロジェクトの登録
+        pid = maxId + 1
         pinfo = request.json['body']
-        pinfo['id'] = maxId + 1
+        pinfo['id'] = pid
         pinfo['createUserId'] = login['id']
         dao.addProject(cursor, pinfo)
+        # ステータスの初期設定
+        p = {'pid': pid, 'createUserId': login['id']}
+        dao = super().dao_manager.get_dao('ticketStatusDao')
+        dao.copyStatus(cursor, p)
+        # 進捗の初期設定
+        dao = super().dao_manager.get_dao('ticketProgressDao')
+        dao.copyProgress(cursor, p)
+        # 種類の初期設定
+        dao = super().dao_manager.get_dao('ticketKindDao')
+        dao.copyKind(cursor, p)
+        # 優先順位の初期設定
+        dao = super().dao_manager.get_dao('ticketPriorityDao')
+        dao.copyPriority(cursor, p)
         # レスポンスの編集
         return {'status': 'OK'}
 
@@ -79,6 +93,9 @@ class ProjectService(BaseService):
         # 一覧を取得
         dao = super().dao_manager.get_dao('projectDao')
         r = dao.projectList(cursor, {})     # TODO 空の引数を排除したい
-        return r if isinstance(r, list) else [r]
+        if r:
+            return r if isinstance(r, list) else [r]
+        else:
+            return None
 
 #[EOF]

@@ -63,4 +63,31 @@
     from t_ticket_progress T1
     where T1.project_id = #{project_id}
   </select>
+
+  <insert id="copyProgress">
+    insert into t_ticket_progress (
+        project_id  --プロジェクトID
+      , id  --識別子
+      , disp_seq  --表示順
+      , name  --ステータス名称
+      , available  --有効フラグ
+      , createDate  --作成日時
+      , createUserId  --作成者ID
+      , updateDate  --更新日時
+      , updateUserId  --更新者ID
+      , versionNo	 --バージョンNo
+    ) select
+        #{pid}
+      , T1.id
+      , T1.disp_seq
+      , T1.name
+      , T1.available
+      , CURRENT_TIMESTAMP
+      , #{createUserId}
+      , CURRENT_TIMESTAMP
+      , #{createUserId}
+      , 1
+    from t_ticket_progress T1
+    where project_id = 0
+  </insert>
 </mapper>
