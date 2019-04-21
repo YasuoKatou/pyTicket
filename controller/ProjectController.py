@@ -45,7 +45,11 @@ class ProjectController(BaseController):
         # プロジェクトサービスを取得
         svc = super().get_service('project')
         # プロジェクトを更新し、更新結果をクライアントに返信する
-        return svc.updateProjet(request)
+        svc_result = svc.updateProjet(request)
+        if svc_result['status'] == 'OK':
+            return super().editOKResponse(None)
+        else:
+            return super().editNGResponse(svc_result['reason'])
 
     def projectList(self, request):
         '''
