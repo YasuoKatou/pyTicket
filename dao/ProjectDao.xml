@@ -64,14 +64,52 @@
 
   <select id="projectList">
 		select
-			  PM.id						--識別子（自動付番）
-			, PM.name					--プロジェクト名称
-			, T1.id kid				--チケット種類ID
-			, T1.name kname		--チケット種類名称
-    from m_project PM
-		left outer join t_ticket_kind T1
-		     on T1.project_id = PM.id
-				and T1.available = 'yes'
-		order by PM.name, T1.disp_seq
+		   SRC.id		--プロジェクトID
+		 , SRC.name		--プロジェクト名称
+		 , SRC.kid		--チケット種類ID
+		 , SRC.kname	--チケット種類名称
+		 , coalesce(CNT.clear_num, 0) finish_num	--処置完了件数
+		 , coalesce(CNT.total, 0) total_num		--総件数
+		from (
+				select
+				    M1.id		--プロジェクトID
+				  , M1.name		--プロジェクト名称
+				  , T1.id kid	--チケット種類ID
+				  , T1.name kname	--チケット種類名称
+				  , T1.disp_seq		--チケット種類表示順
+				from m_project M1	--プロジェクトマスタ
+				inner join t_ticket_kind T1		--チケット種類
+				   on T1.project_id = M1.id		--プロジェクトID
+				  and T1.available  = 'yes'
+				union all
+				select
+				    M2.id		--プロジェクトID
+				  , M2.name		--プロジェクト名称
+				  , 0 kid		--チケットの種類ID
+				  , '' kname	--チケットの種類名称
+				  , -1 disp_seq		--チケット種類表示順
+				from m_project M2	--プロジェクトマスタ
+		) SRC
+		left outer join (
+				select T1.project_id				--プロジェクトID
+				  , 0 kind_id
+				  , count(T1.finish_date) clear_num
+				  , count(1) total			--プロジェクトのチケット総件数
+				 from t_ticket T1
+				group by T1.project_id
+
+				union all
+
+				select T1.project_id				--プロジェクトID
+				  , T1.kind_id						--種類ID
+				  , count(T1.finish_date) clear_num
+				  , count(1) total			--プロジェクトのチケット総件数
+				 from t_ticket T1
+				group by T1.project_id, T1.kind_id
+		) CNT
+	    on CNT.project_id = SRC.id
+	   and CNT.kind_id    = SRC.kid
+		order by SRC.name		--プロジェクト名称
+		       , SRC.disp_seq	--チケット種類表示順
 	</select>
 </mapper>

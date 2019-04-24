@@ -98,11 +98,13 @@ class ProjectService(BaseService):
                     break
             if t_rec:
                 # 同じプロジェクトが存在する場合、種類情報を追加する
-                t_rec['kinds'].append({'id': rec['kid'], 'name': rec['kname']})
+                t_rec['kinds'].append({'id': rec['kid'], 'name': rec['kname'],
+                    'finish': rec['finish_num'], 'total': rec['total_num']})
             else:
                 # プロジェクトが見つからないとき
                 r.append({'id': rec['id'],
                     'name': rec['name'],
+                    'finish': rec['finish_num'], 'total': rec['total_num'], 
                     'kinds': [{'id': rec['kid'], 'name': rec['kname']}]
                 })
         return r
@@ -118,10 +120,7 @@ class ProjectService(BaseService):
         dao = super().dao_manager.get_dao('projectDao')
         r = dao.projectList(cursor, {})     # TODO 空の引数を排除したい
         if r:
-            if isinstance(r, list):
-                return self._editProjectList(r)
-            else:
-                return [r]
+            return self._editProjectList(r)
         else:
             return None
 

@@ -5,7 +5,7 @@ DBType_PostgreSQL = 'PostgreSQL'
 #_DBType = DBType_SQLite
 _DBType = DBType_PostgreSQL
 
-_DB_SERVER = '192.168.3.6'
+_DB_SERVER = '192.168.3.197'
 _DB_SERVER_PORT = '5432'
 _DB_URL_SQLite = u'C:\\Users\\YasuoKatou\\Documents\\workspaces\\sqlite3\\ticket.db'
 _DB_URL_PostgreSQL = u'postgresql://ticket-admin:TicketAdmin@{}:{}/ticket'
