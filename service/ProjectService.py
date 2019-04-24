@@ -105,7 +105,7 @@ class ProjectService(BaseService):
                 r.append({'id': rec['id'],
                     'name': rec['name'],
                     'finish': rec['finish_num'], 'total': rec['total_num'], 
-                    'kinds': [{'id': rec['kid'], 'name': rec['kname']}]
+                    'kinds': []
                 })
         return r
 
