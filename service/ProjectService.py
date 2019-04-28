@@ -4,9 +4,6 @@ import json
 from logging import getLogger
 from service.BaseService import BaseService
 
-from util.MyRandom import rand_n
-from util.MyEncryption import decryption
-
 import util.DBAccess as DBA
 
 _Log = getLogger(__name__)

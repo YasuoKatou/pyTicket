@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yks.ticket.lite.dao.master.TicketDao">
+
+  <select id="findByProject">
+    select id
+      , title
+    from t_ticket
+    where project_id = #{pid}
+  </select>
+
+  <select id="findTicketMaster">
+    select M.m_key, M.id, M.name
+    from (
+        select 'kind' m_key
+          , T1.id, T1.name, T1.disp_seq
+        from t_ticket_kind T1
+        where T1.project_id = #{pid}
+          and T1.available = 'yes'
+
+        union all
+
+        select 'progress' m_key
+          , T2.id, T2.name, T2.disp_seq
+        from t_ticket_progress T2
+        where T2.project_id = #{pid}
+          and T2.available = 'yes'
+
+        union all
+
+        select 'status' m_key
+          , T3.id, T3.name, T3.disp_seq
+        from t_ticket_stat T3
+        where T3.project_id = #{pid}
+          and T3.available = 'yes'
+
+        union all
+
+        select 'priority' m_key
+          , T4.id, T4.name, T4.disp_seq
+        from t_ticket_priority T4
+        where T4.project_id = #{pid}
+          and T4.available = 'yes'
+    ) M
+    order by M.disp_seq
+  </select>
+</mapper>

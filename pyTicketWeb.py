@@ -101,6 +101,11 @@ def response_for_options(**kwargs):
 @post('/edit_project')
 @post('/project_list')
 @post('/project_detail')
+@post('/ticket_list')
+@post('/ticket_master')
+@post('/new_ticket')
+@post('/edit_ticket')
+@post('/ticket_detail')
 def login_out():
     '''
     '''
