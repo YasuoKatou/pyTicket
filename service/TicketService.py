@@ -49,8 +49,8 @@ class TicketService(BaseService):
         if not isinstance(recs, list):
             recs = [recs]
         r = {'status': [], 'progress': [], 'kind': [], 'priority': []}
-        for rec in r:
+        for rec in recs:
             r[rec['m_key']].append(rec)
-        return r
+        return {'master': r}
 
 #[EOF]
