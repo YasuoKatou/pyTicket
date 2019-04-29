@@ -71,6 +71,7 @@ class TicketService(BaseService):
         # チケットの登録
         tid = maxId + 1
         tinfo = request.json['body']
+        #_Log.debug('new ticket request : ' + str(tinfo))
         tinfo['id'] = tid
         tinfo['createUserId'] = login['id']
         dao.addTicket(cursor, tinfo)
@@ -86,5 +87,7 @@ class TicketService(BaseService):
             'root_memo_id': mid, 'parent_memo_id': mid,
             'createUserId': login['id']}
         dao.addMemo(cursor, minfo)
+        # レスポンスの編集
+        return {'status': 'OK'}
 
 #[EOF]
