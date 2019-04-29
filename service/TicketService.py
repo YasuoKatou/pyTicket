@@ -90,4 +90,13 @@ class TicketService(BaseService):
         # レスポンスの編集
         return {'status': 'OK'}
 
+    @DBA.Transactional
+    def ticketDetail(self, request, *args, **kwargs):
+        '''
+        チケット詳細取得
+        '''
+        _Log.debug('ticket detail service start')
+        cursor = kwargs['cursor']
+        dao = super().dao_manager.get_dao('ticketDao')
+        return dao.findById(cursor, {'tid': int(request.json['body']['ticket_id'])})
 #[EOF]

@@ -74,6 +74,14 @@ class TicketController(BaseController):
         '''
         チケット詳細取得
         '''
-        # todo 実装
-        pass
+        # チケットサービスを取得
+        svc = super().get_service('ticket')
+        svc_data = {}
+        # 詳細取得サービスを呼び出し、
+        svc_data['ticket'] = svc.ticketDetail(request)
+        # チケットマスタ取得サービスを呼び出し、
+        request.json['body']['project_id'] = str(svc_data['ticket']['project_id'])
+        svc_data['master'] = svc.findTicketMaster(request)
+        # 詳細情報をクライアントに返信する
+        return super().editOKResponse(svc_data)
 #[EOF]

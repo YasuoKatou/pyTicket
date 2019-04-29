@@ -80,4 +80,21 @@
 	    , #{createUserId} --更新者ID
     )
   </insert>
+
+  <select id="findById">
+    select
+        title				  --チケットタイトル
+      , description		--チケットの説明
+      , status_id			--状態ID
+      , kind_id			  --種類ID
+      , priority_id		--優先順位ID
+      , progress_id		--進捗ID
+      , start_date		--開始日
+      , finish_date		--終了日
+      , project_id		--プロジェクトID
+      , updateUserId	--更新者ID
+      , versionNo as version  --バージョンNo
+    from t_ticket
+    where id = #{tid}
+  </select>
 </mapper>
