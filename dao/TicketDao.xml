@@ -46,4 +46,38 @@
     ) M
     order by M.disp_seq
   </select>
+
+  <select id="findMaxId">
+    select max(id) max_id from t_ticket
+  </select>
+
+  <insert id="addTicket">
+    insert into t_ticket (
+        id				    --チケットID
+      , title				  --チケットタイトル
+      , description		--チケットの説明
+      , status_id			--状態ID
+      , kind_id			  --種類ID
+      , priority_id		--優先順位ID
+      , progress_id		--進捗ID
+      , start_date		--開始日
+      , finish_date		--終了日
+      , project_id		--プロジェクトID
+      , createUserId	--作成者ID
+      , updateUserId	--更新者ID
+    ) values(
+        #{id}				    --チケットID
+      , #{title}				--チケットタイトル
+      , #{description}	--チケットの説明
+      , #{status_id}		--状態ID
+      , #{kind_id}			--種類ID
+      , #{priority_id}	--優先順位ID
+      , #{progress_id}	--進捗ID
+      , #{start_date}		--開始日
+      , #{finish_date}	--終了日
+      , #{project_id}		--プロジェクトID
+	    , #{createUserId} --作成者ID
+	    , #{createUserId} --更新者ID
+    )
+  </insert>
 </mapper>

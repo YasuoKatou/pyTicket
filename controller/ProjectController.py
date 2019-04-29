@@ -26,7 +26,7 @@ class ProjectController(BaseController):
 
     def newProject(self, request):
         '''
-        プロジェクトの新規登録
+        プロジェクトの登録
         '''
         # プロジェクトサービスを取得
         svc = super().get_service('project')

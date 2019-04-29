@@ -15,7 +15,7 @@ class ProjectService(BaseService):
     @DBA.Transactional
     def newProjet(self, request, *args, **kwargs):
         '''
-        プロジェクトの新規登録を行う
+        プロジェクトの登録を行う
         '''
         _Log.debug('new projet service start')
         cursor = kwargs['cursor']
@@ -25,8 +25,8 @@ class ProjectService(BaseService):
         dao = super().dao_manager.get_dao('projectDao')
         r = dao.findMaxId(cursor, {})
         maxId = r['max_id'] if r['max_id'] is not None else 0
-        _Log.debug('new project id : ' + str(maxId))
-        # 新規プロジェクトの登録
+        _Log.debug('max project id : ' + str(maxId))
+        # プロジェクトの登録
         pid = maxId + 1
         pinfo = request.json['body']
         pinfo['id'] = pid

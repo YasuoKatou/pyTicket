@@ -53,4 +53,38 @@ class TicketService(BaseService):
             r[rec['m_key']].append(rec)
         return {'master': r}
 
+    @DBA.Transactional
+    def newTicket(self, request, *args, **kwargs):
+        '''
+        チケットの登録
+        '''
+        _Log.debug('new ticket service start')
+        cursor = kwargs['cursor']
+        # ログイン情報を取得
+        login = super().getLogin(cursor, request)
+
+        # 最大のチケットIDを取得
+        dao = super().dao_manager.get_dao('ticketDao')
+        r = dao.findMaxId(cursor, {})
+        maxId = r['max_id'] if r['max_id'] is not None else 0
+        _Log.debug('max ticket id : ' + str(maxId))
+        # チケットの登録
+        tid = maxId + 1
+        tinfo = request.json['body']
+        tinfo['id'] = tid
+        tinfo['createUserId'] = login['id']
+        dao.addTicket(cursor, tinfo)
+
+        # 最大のチケットメモIDを取得
+        dao = super().dao_manager.get_dao('ticketMemoDao')
+        r = dao.findMaxId(cursor, {})
+        maxId = r['max_id'] if r['max_id'] is not None else 0
+        _Log.debug('max ticket memo id : ' + str(maxId))
+        # todo メモの登録
+        mid = maxId + 1
+        minfo = {'id': mid, 'ticket_id': tid, 'memo': '新規登録',
+            'root_memo_id': mid, 'parent_memo_id': mid,
+            'createUserId': login['id']}
+        dao.addMemo(cursor, minfo)
+
 #[EOF]

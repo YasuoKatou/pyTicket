@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yks.ticket.lite.dao.master.TicketMemoDao">
+
+  <select id="findMaxId">
+    select max(id) max_id from t_ticket_memo
+  </select>
+
+  <insert id="addMemo">
+    insert into t_ticket_memo (
+        id  			--メモID
+	  , ticket_id		--チケットID
+	  , memo			--メモ内容
+	  , root_memo_id	--ルートメモID
+	  , parent_memo_id	--親メモID
+	  , createUserId	--作成者ID
+	  , updateUserId	--更新者ID
+    ) values (
+        #{id}  			    --メモID
+	  , #{ticket_id}		--チケットID
+	  , #{memo}			    --メモ内容
+	  , #{root_memo_id}	    --ルートメモID
+	  , #{parent_memo_id}	--親メモID
+	  , #{createUserId}     --作成者ID
+	  , #{createUserId}     --更新者ID
+    )
+  </insert>
+</mapper>
