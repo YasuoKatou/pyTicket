@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yks.ticket.lite.dao.master.TicketHistoryDao">
+
+    <insert id="addHistory">
+      insert into h_ticket (
+		  id			--チケットID
+		, title			--タイトル
+		, description	--説明
+		, status_id		--状態ID
+		, kind_id		--種類ID
+		, priority_id	--優先順位ID
+		, start_date	--開始日
+		, finish_date	--終了日
+		, progress_id	--チケットの進捗
+		, project_id	--プロジェクトID
+		, createDate	--作成日時
+		, createUserId	--作成者ID
+		, updateDate	--更新日時
+		, updateUserId	--更新者ID
+		, versionNo		--バージョンNo
+      ) select
+		  id			--チケットID
+		, title			--タイトル
+		, description	--説明
+		, status_id		--状態ID
+		, kind_id		--種類ID
+		, priority_id	--優先順位ID
+		, start_date	--開始日
+		, finish_date	--終了日
+		, progress_id	--チケットの進捗
+		, project_id	--プロジェクトID
+		, createDate	--作成日時
+		, createUserId	--作成者ID
+		, updateDate	--更新日時
+		, updateUserId	--更新者ID
+		, versionNo		--バージョンNo
+        from t_ticket
+        where id = #{tid}
+    </insert>
+</mapper>

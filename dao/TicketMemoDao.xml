@@ -6,25 +6,26 @@
 
   <select id="findMaxId">
     select max(id) max_id from t_ticket_memo
+    where ticket_id = #{tid}
   </select>
 
   <insert id="addMemo">
     insert into t_ticket_memo (
-        id  			--メモID
-	  , ticket_id		--チケットID
-	  , memo			--メモ内容
-	  , root_memo_id	--ルートメモID
-	  , parent_memo_id	--親メモID
-	  , createUserId	--作成者ID
-	  , updateUserId	--更新者ID
+		    id          --メモID
+	    , ticket_id   --チケットID
+	    , memo        --メモ内容
+	    , root_memo_id  --ルートメモID
+	    , parent_memo_id  --親メモID
+	    , createUserId  --作成者ID
+	    , updateUserId  --更新者ID
     ) values (
-        #{id}  			    --メモID
-	  , #{ticket_id}		--チケットID
-	  , #{memo}			    --メモ内容
-	  , #{root_memo_id}	    --ルートメモID
-	  , #{parent_memo_id}	--親メモID
-	  , #{createUserId}     --作成者ID
-	  , #{createUserId}     --更新者ID
+        #{id}           --メモID
+	    , #{ticket_id}    --チケットID
+	    , #{memo}         --メモ内容
+	    , #{root_memo_id} --ルートメモID
+	    , #{parent_memo_id}	--親メモID
+	    , #{createUserId}   --作成者ID
+	    , #{createUserId}   --更新者ID
     )
   </insert>
 </mapper>

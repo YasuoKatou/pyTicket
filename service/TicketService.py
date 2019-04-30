@@ -81,7 +81,7 @@ class TicketService(BaseService):
         r = dao.findMaxId(cursor, {})
         maxId = r['max_id'] if r['max_id'] is not None else 0
         _Log.debug('max ticket memo id : ' + str(maxId))
-        # todo メモの登録
+        # メモの登録
         mid = maxId + 1
         minfo = {'id': mid, 'ticket_id': tid, 'memo': '新規登録',
             'root_memo_id': mid, 'parent_memo_id': mid,
@@ -103,4 +103,104 @@ class TicketService(BaseService):
         r['finish_date'] = super().strfdate(r['finish_date'])
         r['last_update'] = super().strftime(r['last_update'])
         return r
+
+    def _makeDiff(self, ol, nw):
+        '''
+        更新履歴を編集する
+        '''
+        def _check(key):
+            olw = ol[key] if ol[key] else '未設定'
+            nww = nw[key] if nw[key] else '未設定'
+            if olw != nww:
+                return '【{0}】--> 【{1}】'.format(olw, nww)
+            return None
+        def _dateCheck(key):
+            olw = str(ol[key]) if ol[key] else '未設定'
+            nww = str(nw[key]) if nw[key] else '未設定'
+            if olw != nww:
+                return '【{0}】--> 【{1}】'.format(olw, nww)
+            return None
+
+        m = []
+        #タイトル
+        n = _check('title')
+        if n:
+            m.append('タイトルを変更 ' + n)
+        #内容
+        n = _check('description')
+        if n:
+            m.append('説明を変更 ' + n)
+        #状態
+        n = _check('status_name')
+        if n:
+            m.append('状態を変更 ' + n)
+        #進捗
+        n = _check('progress_name')
+        if n:
+            m.append('進捗を変更 ' + n)
+        #種類
+        n = _check('kind_name')
+        if n:
+            m.append('種類を変更 ' + n)
+        #優先順位
+        n = _check('priority_name')
+        if n:
+            m.append('優先順位を変更 ' + n)
+        #開始日
+        n = _dateCheck('start_date')
+        if n:
+            m.append('開始日を変更 ' + n)
+        #終了日
+        n = _dateCheck('finish_date')
+        if n:
+            m.append('終了日を変更 ' + n)
+
+        if len(m) > 0:
+            return '\n'.join(m)
+        else:
+            return '変更なし'
+
+    @DBA.Transactional
+    def updateTicket(self, request, *args, **kwargs):
+        '''
+        チケット更新
+        '''
+        _Log.debug('ticket detail service start')
+        cursor = kwargs['cursor']
+        # ログイン情報を取得
+        login = super().getLogin(cursor, request)
+        userId = login['id']
+
+        # 更新前のチケット情報を取得
+        tReq = request.json['body']
+        tid = int(tReq['id'])
+        tDao = super().dao_manager.get_dao('ticketDao')
+        prev = tDao.findTicket(cursor, {'tid': tid})
+
+        # チケット履歴にコピー
+        hDao = super().dao_manager.get_dao('ticketHistoryDao')
+        hDao.addHistory(cursor, {'tid': tid})
+
+        # チケット更新
+        tReq['updateUserId'] = userId
+        _Log.debug('ticket update : ' + str(tReq))
+        tDao.updateTicket(cursor, tReq)
+
+        # 更新後のチケット情報を取得
+        aftr = tDao.findTicket(cursor, {'tid': tid})
+
+        # 更新内容を編集
+        memo = self._makeDiff(prev, aftr)
+        # 更新内容を履歴に登録
+        mDao = super().dao_manager.get_dao('ticketMemoDao')
+        r = mDao.findMaxId(cursor, {'tid': tid})
+        maxId = (r['max_id'] if r['max_id'] is not None else 0) + 1
+        rec = {'id': maxId, 'ticket_id': tid, 'memo': memo,
+            'root_memo_id': maxId, 'parent_memo_id': maxId,
+            'createUserId': userId}
+        mDao.addMemo(cursor, rec)
+
+        # レスポンスの編集
+        return {'status': 'OK'}
+
 #[EOF]

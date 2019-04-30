@@ -65,7 +65,7 @@
       , project_id		--プロジェクトID
       , createUserId	--作成者ID
       , updateUserId	--更新者ID
-    ) values(
+    ) values (
         #{id}				    --チケットID
       , #{title}				--チケットタイトル
       , #{description}	--チケットの説明
@@ -97,5 +97,49 @@
       , versionNo as version  --バージョンNo
     from t_ticket
     where id = #{tid}
+  </select>
+
+  <update id="updateTicket">
+    update t_ticket set
+        title = #{title}			    	  --チケットタイトル
+      , description = #{description}	--チケットの説明
+      , status_id = #{status_id}			--状態ID
+      , kind_id = #{kind_id}			    --種類ID
+      , priority_id = #{priority_id}	--優先順位ID
+      , progress_id = #{progress_id}	--進捗ID
+      , start_date = #{start_date}		--開始日
+      , finish_date = #{finish_date}	--終了日
+      , project_id = #{project_id}		--プロジェクトID
+      , updateDate = CURRENT_TIMESTAMP  --更新日時
+      , updateUserId = #{updateUserId}  --更新者ID
+      , versionNo = versionNo + 1       --バージョンNo
+    where id = #{id}
+      and versionNo = #{version}
+  </update>
+
+  <select id="findTicket">
+    select
+        T1.title
+      , T1.description
+      , case when T1.start_date  is null then '' else to_char(T1.start_date,  'YYYY-MM-DD') end start_date
+      , case when T1.finish_date is null then '' else to_char(T1.finish_date, 'YYYY-MM-DD') end finish_date
+      , case when M1.name        is null then '' else M1.name end kind_name
+      , case when M2.name        is null then '' else M2.name end status_name
+      , case when M3.name        is null then '' else M3.name end progress_name
+      , case when M4.name        is null then '' else M4.name end priority_name
+    from t_ticket T1
+    left outer join t_ticket_kind M1     --種類
+       on M1.project_id = T1.project_id
+      and M1.id = T1.kind_id
+    left outer join t_ticket_stat M2     --状態
+       on M2.project_id = T1.project_id
+      and M2.id = T1.status_id
+    left outer join t_ticket_progress M3 --進捗
+       on M3.project_id = T1.project_id
+      and M3.id = T1.progress_id
+    left outer join t_ticket_priority M4 --優先順位
+       on M4.project_id = T1.project_id
+      and M4.id = T1.priority_id
+    where T1.id = #{tid}
   </select>
 </mapper>

@@ -70,8 +70,15 @@ class TicketController(BaseController):
         '''
         チケットの更新
         '''
-        # todo 実装
-        pass
+        # チケットサービスを取得
+        svc = super().get_service('ticket')
+        # チケットを更新し、
+        svc_result = svc.updateTicket(request)
+        # 登録結果をクライアントに返信する
+        if svc_result['status'] == 'OK':
+            return super().editOKResponse(None)
+        else:
+            return super().editNGResponse(svc_result['reason'])
 
     def ticketDetail(self, request):
         '''
