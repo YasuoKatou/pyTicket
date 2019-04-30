@@ -141,5 +141,6 @@
        on M4.project_id = T1.project_id
       and M4.id = T1.priority_id
     where T1.id = #{tid}
+      and T1.versionNo = #{version}
   </select>
 </mapper>

@@ -172,10 +172,13 @@ class TicketService(BaseService):
         userId = login['id']
 
         # 更新前のチケット情報を取得
+        tDao = super().dao_manager.get_dao('ticketDao')
         tReq = request.json['body']
         tid = int(tReq['id'])
-        tDao = super().dao_manager.get_dao('ticketDao')
-        prev = tDao.findTicket(cursor, {'tid': tid})
+        ent = {'tid': tid, 'version': int(tReq['version'])}
+        prev = tDao.findTicket(cursor, ent)
+        if not prev:
+            raise KeyError('更新対象のチケットがありません. ({})'.format(ent))
 
         # チケット履歴にコピー
         hDao = super().dao_manager.get_dao('ticketHistoryDao')
@@ -183,11 +186,18 @@ class TicketService(BaseService):
 
         # チケット更新
         tReq['updateUserId'] = userId
-        _Log.debug('ticket update : ' + str(tReq))
+        #_Log.debug('ticket update : ' + str(tReq))
         tDao.updateTicket(cursor, tReq)
+        # todo 2019/5/1
+        # 更新結果が正確に判定できない.
+        # 更新前／後のチケット情報を取得するときにバージョン情報
+        # を取得条件に付加することで対応する
 
         # 更新後のチケット情報を取得
-        aftr = tDao.findTicket(cursor, {'tid': tid})
+        ent['version'] = ent['version'] + 1
+        aftr = tDao.findTicket(cursor, ent)
+        if not prev:
+            raise KeyError('更新に失敗しました. ({})'.format(ent))
 
         # 更新内容を編集
         memo = self._makeDiff(prev, aftr)
