@@ -1,5 +1,6 @@
 # -*- coding:utf-8 -*-
 from logging import getLogger
+from datetime import datetime, date
 
 from config.ap_config import Products
 
@@ -26,7 +27,16 @@ class BaseService:
         self._dao_manager = dao_manager
 
     def strftime(self, dt):
-        return dt.strftime('%Y-%m-%d %H:%M:%S')
+        if isinstance(dt, datetime):
+            return dt.strftime('%Y-%m-%d %H:%M:%S')
+        else:
+            return None
+
+    def strfdate(self, dt):
+        if isinstance(dt, date):
+            return dt.strftime('%Y-%m-%d')
+        else:
+            return None
 
     def getLogin(self, cur, request):
         if 'header' not in request:

@@ -251,16 +251,17 @@
 |:-:|:--|:--|:-:|:-:|:-:|:-:|:-:|:--|
 |1|マスタ情報|master|◯|||||チケットのマスタを取得 (/ticket_master)のレスポンスと同じ|
 |2|チケット情報|ticket|◯||||||
-|3|チケットタイトル|title||◯|||||
-|4|チケットの説明|description||◯|||||
-|5|状態ID|status_id||◯|||||
-|6|種類ID|kind_id||◯|||||
-|7|優先順位ID|priority_id||◯|||||
-|8|進捗ID|progress_id||◯|||||
-|9|開始日|start_date||◯|||||
-|10|終了日|finish_date||◯|||||
-|11|プロジェクトID|project_id||◯|||||
-|12|最終更新日|last_update||◯|||||
-|13|バージョン|version||◯|||||
+|3|チケットID|ticket_id||◯|||||
+|4|チケットタイトル|title||◯|||||
+|5|チケットの説明|description||◯|||||
+|6|状態ID|status_id||◯|||||
+|7|種類ID|kind_id||◯|||||
+|8|優先順位ID|priority_id||◯|||||
+|9|進捗ID|progress_id||◯|||||
+|10|開始日|start_date||◯|||||
+|11|終了日|finish_date||◯|||||
+|12|プロジェクトID|project_id||◯|||||
+|13|最終更新日|last_update||◯|||||
+|14|バージョン|version||◯|||||
 
 <a name="end-of-document"></a>

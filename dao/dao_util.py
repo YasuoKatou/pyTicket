@@ -16,7 +16,7 @@ elif DBC.DBConfig.getDBType() == DBC.DBType_SQLite:
 _Log = getLogger(__name__)
 
 #Dao呼び出しパターン(xxDao.insert(param))
-FN_RE = re.compile(r'.+\.(?P<name>\w+).+')
+FN_RE = re.compile(r'.+\.(?P<name>\w+)\(.+')
 
 def addFuncName(func):
     def wrapper(self, *args):

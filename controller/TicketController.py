@@ -2,8 +2,11 @@
 
 import json
 from bottle import HTTPResponse
+from logging import getLogger
 
 from controller.BaseController import BaseController
+
+_Log = getLogger(__name__)
 
 class TicketController(BaseController):
     '''
@@ -44,7 +47,7 @@ class TicketController(BaseController):
         # チケットサービスを取得
         svc = super().get_service('ticket')
         # チケットマスタ取得サービスを呼び出し、
-        svc_data = svc.findTicketMaster(request)
+        svc_data = svc.findTicketMaster(request.json['body']['project_id'])
         # 結果をクライアントに返信する
         return super().editOKResponse(svc_data)
 
@@ -80,8 +83,8 @@ class TicketController(BaseController):
         # 詳細取得サービスを呼び出し、
         svc_data['ticket'] = svc.ticketDetail(request)
         # チケットマスタ取得サービスを呼び出し、
-        request.json['body']['project_id'] = str(svc_data['ticket']['project_id'])
-        svc_data['master'] = svc.findTicketMaster(request)
+        pid = str(svc_data['ticket']['project_id'])
+        svc_data['master'] = svc.findTicketMaster(pid)['master']
         # 詳細情報をクライアントに返信する
         return super().editOKResponse(svc_data)
 #[EOF]

@@ -83,7 +83,8 @@
 
   <select id="findById">
     select
-        title				  --チケットタイトル
+        id	--チケットID
+      , title				  --チケットタイトル
       , description		--チケットの説明
       , status_id			--状態ID
       , kind_id			  --種類ID
@@ -92,7 +93,7 @@
       , start_date		--開始日
       , finish_date		--終了日
       , project_id		--プロジェクトID
-      , updateUserId	--更新者ID
+      , updatedate as last_update	--最終更新日時
       , versionNo as version  --バージョンNo
     from t_ticket
     where id = #{tid}

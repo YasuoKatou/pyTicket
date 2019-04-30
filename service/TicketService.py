@@ -33,7 +33,7 @@ class TicketService(BaseService):
             return r
 
     @DBA.Transactional
-    def findTicketMaster(self, request, *args, **kwargs):
+    def findTicketMaster(self, project_id, *args, **kwargs):
         '''
         チケットマスタの取得を行う
         '''
@@ -41,7 +41,7 @@ class TicketService(BaseService):
         cursor = kwargs['cursor']
         # チケットの検索
         dao = super().dao_manager.get_dao('ticketDao')
-        p = {'pid': int(request.json['body']['project_id'])}
+        p = {'pid': int(project_id)}
         recs = dao.findTicketMaster(cursor, p)
         # レスポンスの編集
         if not recs:
@@ -98,5 +98,9 @@ class TicketService(BaseService):
         _Log.debug('ticket detail service start')
         cursor = kwargs['cursor']
         dao = super().dao_manager.get_dao('ticketDao')
-        return dao.findById(cursor, {'tid': int(request.json['body']['ticket_id'])})
+        r = dao.findById(cursor, {'tid': int(request.json['body']['ticket_id'])})
+        r['start_date'] = super().strfdate(r['start_date'])
+        r['finish_date'] = super().strfdate(r['finish_date'])
+        r['last_update'] = super().strftime(r['last_update'])
+        return r
 #[EOF]
