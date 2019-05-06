@@ -20,7 +20,7 @@ class TicketDaoManager:
         #このモジュールと同じフォルダに存在する全xmlファイルを対象にする
         p = Path(__file__).parent
         for xml in p.glob('*.xml'):
-            dao = get_dao(xml)
+            dao = get_dao(str(xml.resolve()))
             cls._dao_map[dao.dao_name] = dao
             print('dao :', dao.dao_name)
         return super().__new__(cls)
