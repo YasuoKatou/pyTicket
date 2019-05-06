@@ -114,6 +114,7 @@ def login_out():
     return edit_response(json.dumps(result))
 
 if __name__ == '__main__':
+    # コマンドから起動した場合
     parser = argparse.ArgumentParser(description='pyTicket for Web')
     parser.add_argument('--db_host', help='DB Server')
     parser.add_argument('--db_port', help='DB Server port')
@@ -133,4 +134,14 @@ if __name__ == '__main__':
     #run(host='localhost', port=8080)
     run(host='0.0.0.0', port=8080)
 
+else:
+    # uWSGIから起動した場合
+
+    #サービスの一覧を作成
+    svc_map = make_service_map()
+
+    #コントローラの一覧を作成
+    make_controller_map(svc_map)
+
+    application = default_app()
 #[EOF]
