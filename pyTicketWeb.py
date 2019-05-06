@@ -5,7 +5,7 @@ sys.dont_write_bytecode = True
 import argparse
 import json
 import logging
-from bottle import post, request, response, run, HTTPResponse, hook, route
+from bottle import post, request, response, run, HTTPResponse, hook, route, default_app
 
 from dao.ticket_dao_manager import TicketDaoManager
 
