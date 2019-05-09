@@ -98,7 +98,7 @@ class TicketService(BaseService):
         _Log.debug('ticket detail service start')
         cursor = kwargs['cursor']
         dao = super().dao_manager.get_dao('ticketDao')
-        r = dao.findById(cursor, {'tid': int(request.json['body']['ticket_id'])})
+        r = dao.findById(cursor, {'tid': int(request.json['body']['id'])})
         r['start_date'] = super().strfdate(r['start_date'])
         r['finish_date'] = super().strfdate(r['finish_date'])
         r['last_update'] = super().strftime(r['last_update'])
