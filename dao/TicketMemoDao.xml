@@ -42,5 +42,6 @@
 		left outer join m_user MU
 		  on MU.id = TM.createUserId
     where TM.ticket_id = #{tid}
+		order by TM.createDate	--登録日時
   </select>
 </mapper>
