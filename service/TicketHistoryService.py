@@ -26,7 +26,7 @@ class TicketHistoryService(BaseService):
             if not isinstance(r, list):
                 r = [r]
             for rec in r:
-                rec['create_date'] = super().strfdate(rec['create_date'])
+                rec['create_date'] = super().strftime(rec['create_date'])
         return r
 
 #[EOF]
