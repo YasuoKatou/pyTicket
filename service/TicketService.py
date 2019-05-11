@@ -21,7 +21,7 @@ class TicketService(BaseService):
         cursor = kwargs['cursor']
         # チケットの検索
         dao = super().dao_manager.get_dao('ticketDao')
-        p = {'pid': int(request.json['body']['project_id'])}
+        p = {'pid': int(request.json['body']['id'])}
         r = dao.findByProject(cursor, p)
         # レスポンスの編集
         if r:

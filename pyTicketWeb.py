@@ -106,6 +106,7 @@ def response_for_options(**kwargs):
 @post('/new_ticket')
 @post('/edit_ticket')
 @post('/ticket_detail')
+@post('/ticket_history')
 def login_out():
     '''
     '''
