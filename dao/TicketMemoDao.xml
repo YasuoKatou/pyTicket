@@ -28,4 +28,19 @@
 	    , #{createUserId}   --更新者ID
     )
   </insert>
+
+  <select id="findHistory">
+    select
+		    TM.id          --メモID
+			, TM.ticket_id   --チケットID
+			, TM.memo        --メモ内容
+			, TM.root_memo_id root_id			--ルートメモID
+			, TM.parent_memo_id parent_id	--親メモID
+			, TM.createDate	create_date	--登録日時
+			, MU.name1 || ' ' || MU.name2 create_user		--作成者
+    from t_ticket_memo TM
+		left outer join m_user MU
+		  on MU.id = TM.createUserId
+    where TM.ticket_id = #{tid}
+  </select>
 </mapper>
