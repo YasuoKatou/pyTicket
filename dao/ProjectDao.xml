@@ -71,6 +71,7 @@
 		 , coalesce(CNT.clear_num, 0) finish_num	--処置完了件数
 		 , coalesce(CNT.total, 0) total_num		--総件数
 		from (
+				-- プロジェクトのチケット種類一覧
 				select
 				    M1.id		--プロジェクトID
 				  , M1.name		--プロジェクト名称
@@ -81,7 +82,8 @@
 				inner join t_ticket_kind T1		--チケット種類
 				   on T1.project_id = M1.id		--プロジェクトID
 				  and T1.available  = 'yes'
-				union all
+			union all
+				-- プロジェクトの一覧
 				select
 				    M2.id		--プロジェクトID
 				  , M2.name		--プロジェクト名称
@@ -90,25 +92,33 @@
 				  , -1 disp_seq		--チケット種類表示順
 				from m_project M2	--プロジェクトマスタ
 		) SRC
-		left outer join (
-				select T1.project_id				--プロジェクトID
-				  , 0 kind_id
-				  , count(T1.finish_date) clear_num
-				  , count(1) total			--プロジェクトのチケット総件数
-				 from t_ticket T1
-				group by T1.project_id
-
-				union all
-
+		inner join (
+				-- チケット種類ごとの件数
 				select T1.project_id				--プロジェクトID
 				  , T1.kind_id						--種類ID
 				  , count(T1.finish_date) clear_num
 				  , count(1) total			--プロジェクトのチケット総件数
 				 from t_ticket T1
 				group by T1.project_id, T1.kind_id
+			union all
+				-- プロジェクトごとの件数
+				select MP.id						--プロジェクトID
+				  , 0 kind_id
+				  , PTC.clear_num
+				  , PTC.total
+				from m_project MP		--プロジェクトマスタ
+				left outer join (
+					select T1.project_id				--プロジェクトID
+					  , 0 kind_id
+					  , count(T1.finish_date) clear_num
+					  , count(1) total			--プロジェクトのチケット総件数
+					 from t_ticket T1	--チケットマスタ
+					group by T1.project_id
+					) PTC
+					on PTC.project_id = MP.id
 		) CNT
-	    on CNT.project_id = SRC.id
-	   and CNT.kind_id    = SRC.kid
+			  on CNT.project_id = SRC.id
+			 and CNT.kind_id    = SRC.kid
 		order by SRC.name		--プロジェクト名称
 		       , SRC.disp_seq	--チケット種類表示順
 	</select>
