@@ -5,10 +5,15 @@
 <mapper namespace="yks.ticket.lite.dao.master.TicketDao">
 
   <select id="findByProject">
-    select id
-      , title
-    from t_ticket
-    where project_id = #{pid}
+    select T1.id
+      , T1.title
+      , coalesce(TS.name, '') status --チケットの状態
+    from t_ticket T1
+    left outer join t_ticket_stat TS
+        on TS.project_id = T1.project_id
+       and TS.id = T1.status_id
+    where T1.project_id = #{pid}
+    order by TS.disp_seq, T1.title
   </select>
 
   <select id="findTicketMaster">
